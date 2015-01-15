@@ -1,4 +1,5 @@
-(ns eclipse.core.internal)
+(ns eclipse.core.internal-test
+  (:use clojure.math.numeric-tower))
 
 (defn- is-opponent-for? [state]
   (fn [target] (not= state (:state target))))
@@ -31,9 +32,19 @@
       (if (< numerator 6) (/ numerator 6) (/ 5 6))
       (/ 1 6))))
 
-(defn binom 
+(defn bin-coef 
   "Takes two nonnegative integers n and k, where k is greater than or equal to n
-  and returns their binomial coefficients, all combinations."
+  and returns the number of k-elements subsets of n-elements set, in other words
+  their binomial coefficient."
   [n k]
   (let [factorial (fn [x] (apply * (range 1 (inc x))))]
     (/ (factorial n) (* (factorial k) (factorial (- n k))))))
+
+(defn bin-dist
+  "Takes three nonnegative integers n, k and p, where k is greater than or equal
+  to n and p is a fraction. Returns binomial distribution where n is the number
+  or repetitions, k is the number of desired cases and p is the probability of
+  the desired case."
+  [n k p]
+  (let [q (- 1 p)]
+    (* (bin-coef n k) (expt p k) (expt q (- n k)))))
