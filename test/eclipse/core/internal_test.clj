@@ -10,7 +10,8 @@
                 :computer 0,
                 :shield 0,
                 :hull 1}
-   :hits [0 0 0]})
+   :hits {:1 {1/6 1} :2 {2/6 1} :4 {}},
+   :alive 1})
 
 (def att-dreadnought
   {:state "attacker",
@@ -19,7 +20,8 @@
                 :computer 5,
                 :shield -5,
                 :hull 5}
-   :hits [0 0 0]})
+   :hits {:1 {} :2 {} :4 {}},
+   :alive 1})
 
 (def def-interceptor
   {:state "defender",
@@ -28,7 +30,8 @@
                 :computer 0,
                 :shield 0,
                 :hull 0}
-   :hits [0 0 0]})
+   :hits {:1 {} :2 {} :4 {}},
+   :alive 1})
 
 (def def-cruiser
   {:state "attacker",
@@ -37,14 +40,14 @@
                 :computer 2,
                 :shield -2,
                 :hull 1}
-   :hits [0 0 0]})
+   :hits {:1 {} :2 {} :4 {}},
+   :alive 1})
 
 (facts "filter and return targets"
   (fact "attacker can find a defending ship as target"
         (count (targets-for "attacker" [def-interceptor att-interceptor])) => 1)
   (fact "defender can find a attacking ships as targets"
-        (count (targets-for
-                 "defender"
+        (count (targets-for "defender"
                  [def-interceptor att-interceptor att-interceptor])) => 2 )
   (fact "the state of the attackers target is defender"
         (:state (get (targets-for
@@ -56,17 +59,19 @@
                        [def-interceptor att-interceptor]) 0)) => "attacker" ))
 
 (facts "missiles"
-  (fact "attacker interceptor has missiles"
-        (has-missiles? att-interceptor))
-  (fact "attacker dreadnought has missiles"
-        (has-missiles? att-dreadnought))
-  (fact "defender cruiser has missiles"
+  (fact "has-missiles? returns true when ship has at least one missile"
+        (has-missiles? att-interceptor)
+        (has-missiles? att-dreadnought)
         (has-missiles? def-cruiser))
   (fact "defender interceptor does not have missiles"
         (has-missiles? def-interceptor) => falsey)
   (fact "adds attacker missiles to defendes hits vector"
-        (:hits (inc-hits-missiles att-interceptor def-interceptor))=> [0 1 0]
-        (:hits (inc-hits-missiles def-cruiser att-interceptor))=> [1 2 0]))
+        (:hits (attack-with-missiles att-interceptor def-interceptor)) =>
+          {:1 {} :2 {1/6 1} :4 {}}
+        (:hits (attack-with-missiles def-cruiser def-interceptor)) =>
+          {:1 {1/2 1} :2 {1/2 2} :4 {}}
+        (:hits (attack-with-missiles def-cruiser att-interceptor)) =>
+          {:1 {1/6 1, 1/2 1} :2 {2/6 1, 1/2 2} :4 {}}))
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"

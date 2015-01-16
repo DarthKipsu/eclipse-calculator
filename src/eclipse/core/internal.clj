@@ -49,11 +49,24 @@
   (let [q (- 1 p)]
     (* (bin-coef n k) (math/expt p k) (math/expt q (- n k)))))
 
-(defn inc-hits-missiles
-  "Takes two map presentations of ships, the attacking ship and its target. Returns
+(defn hits-with-attacks
+  "Takes map containing current hits, attacker weapon count and odds for a single
+  hit as parameters and returns a new map containing the added hits."
+  [hits weapons odds]
+  (if (> weapons 0)
+    (assoc hits odds (if (get hits odds)
+                       (+ (get hits odds) weapons)
+                       weapons))
+    hits))
+
+(defn attack-with-missiles
+  "Takes two map presentations of ships, the attacking ship and it's target. Returns
   the target with updated hit counter according to attacker missiles."
   [ship-a ship-d]
   (let [hp1 (component ship-a :dice1HPmissile)
         hp2 (component ship-a :dice2HPmissile)
-        hits (:hits ship-d)]
-    (assoc ship-d :hits (assoc hits 0 (+ (get hits 0) hp1) 1 (+ (get hits 1) hp2)))))
+        odds (hit-once-odds ship-a ship-d)
+        hits (:hits ship-d)
+        hp1-new (hits-with-attacks (:1 hits) hp1 odds)
+        hp2-new (hits-with-attacks (:2 hits) hp2 odds)]
+    (assoc ship-d :hits (assoc hits :1 hp1-new :2 hp2-new))))
