@@ -1,5 +1,5 @@
-(ns eclipse.core.internal-test
-  (:use clojure.math.numeric-tower))
+(ns eclipse.core.internal
+  (:require [clojure.math.numeric-tower :as math]))
 
 (defn- is-opponent-for? [state]
   (fn [target] (not= state (:state target))))
@@ -47,4 +47,13 @@
   the desired case."
   [n k p]
   (let [q (- 1 p)]
-    (* (bin-coef n k) (expt p k) (expt q (- n k)))))
+    (* (bin-coef n k) (math/expt p k) (math/expt q (- n k)))))
+
+(defn inc-hits-missiles
+  "Takes two map presentations of ships, the attacking ship and its target. Returns
+  the target with updated hit counter according to attacker missiles."
+  [ship-a ship-d]
+  (let [hp1 (component ship-a :dice1HPmissile)
+        hp2 (component ship-a :dice2HPmissile)
+        hits (:hits ship-d)]
+    (assoc ship-d :hits (assoc hits 0 (+ (get hits 0) hp1) 1 (+ (get hits 1) hp2)))))

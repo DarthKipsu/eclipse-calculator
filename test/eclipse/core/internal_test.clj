@@ -10,7 +10,7 @@
                 :computer 0,
                 :shield 0,
                 :hull 1}
-   :hits [1 0 0]})
+   :hits [0 0 0]})
 
 (def att-dreadnought
   {:state "attacker",
@@ -19,7 +19,7 @@
                 :computer 5,
                 :shield -5,
                 :hull 5}
-   :hits [1 0 0 0 0 0 0]})
+   :hits [0 0 0]})
 
 (def def-interceptor
   {:state "defender",
@@ -28,7 +28,7 @@
                 :computer 0,
                 :shield 0,
                 :hull 0}
-   :hits [1 0]})
+   :hits [0 0 0]})
 
 (def def-cruiser
   {:state "attacker",
@@ -37,9 +37,9 @@
                 :computer 2,
                 :shield -2,
                 :hull 1}
-   :hits [1 0 0]})
+   :hits [0 0 0]})
 
-(facts "filter-and-return-targets-test"
+(facts "filter and return targets"
   (fact "attacker can find a defending ship as target"
         (count (targets-for "attacker" [def-interceptor att-interceptor])) => 1)
   (fact "defender can find a attacking ships as targets"
@@ -63,7 +63,10 @@
   (fact "defender cruiser has missiles"
         (has-missiles? def-cruiser))
   (fact "defender interceptor does not have missiles"
-        (has-missiles? def-interceptor) => falsey))
+        (has-missiles? def-interceptor) => falsey)
+  (fact "adds attacker missiles to defendes hits vector"
+        (:hits (inc-hits-missiles att-interceptor def-interceptor))=> [0 1 0]
+        (:hits (inc-hits-missiles def-cruiser att-interceptor))=> [1 2 0]))
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"
