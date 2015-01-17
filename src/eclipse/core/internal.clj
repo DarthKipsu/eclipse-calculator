@@ -84,6 +84,9 @@
   (let [odds (reduce (fn [acc [p n]] (* acc (bin-dist n k p))) 1 hits)]
     (if (== odds 1) 0 odds)))
 
+(defn- alive-multiplier [& odds]
+  (apply * (filter (complement zero?) odds)))
+
 (defn alive-odds
   "Takes a map presentation of a ship, calculates the odds for the ship to be still
   alive and returns it as a float."
@@ -92,12 +95,10 @@
         hull (component ship :hull)]
     (cond
       (has-no-hits? ship) 1
-      (= 0 hull) (apply * (filter (complement zero?)
-                                  [(hit-odds-for-hit-type (:1 hits) 0)
+      (= 0 hull) (alive-multiplier (hit-odds-for-hit-type (:1 hits) 0)
                                    (hit-odds-for-hit-type (:2 hits) 0)
-                                   (hit-odds-for-hit-type (:4 hits) 0)]))
-      (= 1 hull) (apply * (filter (complement zero?)
-                                  [(+ (hit-odds-for-hit-type (:1 hits) 0)
+                                   (hit-odds-for-hit-type (:4 hits) 0))
+      (= 1 hull) (alive-multiplier (+ (hit-odds-for-hit-type (:1 hits) 0)
                                       (hit-odds-for-hit-type (:1 hits) 1))
                                    (hit-odds-for-hit-type (:2 hits) 0)
-                                   (hit-odds-for-hit-type (:4 hits) 0)])))))
+                                   (hit-odds-for-hit-type (:4 hits) 0)))))

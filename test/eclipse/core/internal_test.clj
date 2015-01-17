@@ -44,7 +44,7 @@
    :alive 1})
 
 (def def-cruiser
-  {:state "attacker",
+  {:state "defender",
    :components {:dice1HPmissile 1,
                 :dice2HPmissile 2,
                 :computer 2,
@@ -110,4 +110,4 @@
         (alive-odds def-interceptor) => (roughly 1)
         (alive-odds def-cruiser) => (roughly 25/36)
         (alive-odds def-base) => (roughly 25/54)
-        (alive-odds att-interceptor) =future=> (roughly 5/9)))
+        (alive-odds att-interceptor) => (roughly 2/3)))
