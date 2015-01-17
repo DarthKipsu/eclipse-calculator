@@ -7,6 +7,10 @@
 (defn- component [ship component]
   (get-in ship [:components component]))
 
+(defn- has-no-hits? [ship]
+  (let [hits (:hits ship)]
+    (and (empty? (:1 hits)) (empty? (:2 hits)) (empty? (:4 hits)))))
+
 (defn targets-for
   "Takes a string presentation of status and a list containing map presentations 
   of ships, filters through the list and returns those with unmatching states.
@@ -70,3 +74,30 @@
         hp1-new (hits-with-attacks (:1 hits) hp1 odds)
         hp2-new (hits-with-attacks (:2 hits) hp2 odds)]
     (assoc ship-d :hits (assoc hits :1 hp1-new :2 hp2-new))))
+
+(defn hit-odds-for-hit-type
+  "Takes a map containing all hits of a single weapon type (for example 1HP weapons)
+  and a number k indicating the desired amount of hits the ship has taken, for ex-
+  ample 0 if no desired amoutn of hits is zero. Returns the odds for the desired
+  amount of hits as a float."
+  [hits k]
+  (let [odds (reduce (fn [acc [p n]] (* acc (bin-dist n k p))) 1 hits)]
+    (if (== odds 1) 0 odds)))
+
+(defn alive-odds
+  "Takes a map presentation of a ship, calculates the odds for the ship to be still
+  alive and returns it as a float."
+  [ship]
+  (let [hits (:hits ship)
+        hull (component ship :hull)]
+    (cond
+      (has-no-hits? ship) 1
+      (= 0 hull) (apply * (filter (complement zero?)
+                                  [(hit-odds-for-hit-type (:1 hits) 0)
+                                   (hit-odds-for-hit-type (:2 hits) 0)
+                                   (hit-odds-for-hit-type (:4 hits) 0)]))
+      (= 1 hull) (apply * (filter (complement zero?)
+                                  [(+ (hit-odds-for-hit-type (:1 hits) 0)
+                                      (hit-odds-for-hit-type (:1 hits) 1))
+                                   (hit-odds-for-hit-type (:2 hits) 0)
+                                   (hit-odds-for-hit-type (:4 hits) 0)])))))

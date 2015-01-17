@@ -23,6 +23,16 @@
    :hits {:1 {} :2 {} :4 {}},
    :alive 1})
 
+(def def-base
+  {:state "defender",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :computer 0,
+                :shield -1,
+                :hull 0}
+   :hits {:1 {1/6 1, 2/6 1} :2 {1/6 1} :4 {}},
+   :alive 1})
+
 (def def-interceptor
   {:state "defender",
    :components {:dice1HPmissile 0,
@@ -40,7 +50,7 @@
                 :computer 2,
                 :shield -2,
                 :hull 1}
-   :hits {:1 {} :2 {} :4 {}},
+   :hits {:1 {} :2 {1/6 2} :4 {}},
    :alive 1})
 
 (facts "filter and return targets"
@@ -95,4 +105,9 @@
   (fact "binomial distribution when n=2, k=1 and p=1/6 is 5/18"
         (bin-dist 2 1 1/6) => (roughly 5/18))
   (fact "binomial distribution when n=5, k=3 and p=2/6 is 40/243"
-        (bin-dist 5 3 2/6) => (roughly 40/243)))
+        (bin-dist 5 3 2/6) => (roughly 40/243))
+  (fact "odds to be still alive are returned correctly"
+        (alive-odds def-interceptor) => (roughly 1)
+        (alive-odds def-cruiser) => (roughly 25/36)
+        (alive-odds def-base) => (roughly 25/54)
+        (alive-odds att-interceptor) =future=> (roughly 5/9)))
