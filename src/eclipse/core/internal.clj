@@ -98,8 +98,8 @@
 
 (defn hull-hit-combinations
   "Takes the amount of hull as an integer and a vector containing hit combina-
-  tions and returns the number of combinations combined where the ship has not
-  yet received a fatal amount of hits."
+  tions and returns the number of combinations where the ship has not yet
+  received a fatal amount of hits."
   [hull hits]
   (let [indexes (range 1 (+ 2 hull))]
     (apply + (map (fn [i] (get hits i)) indexes))))

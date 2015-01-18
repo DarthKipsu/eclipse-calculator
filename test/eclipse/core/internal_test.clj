@@ -44,16 +44,14 @@
    :alive 1})
 
 (facts "filter and return targets"
-  (fact "attacker can find a defending ship as target"
-        (count (targets-for "attacker" [def-int att-int])) => 1)
-  (fact "defender can find a attacking ships as targets"
+  (fact "the correct amount of target ships can be found"
+        (count (targets-for "attacker" [def-int att-int])) => 1
         (count (targets-for "defender" [def-int att-int att-int])) => 2 )
-  (fact "the state of the attackers target is defender"
+  (fact "the state of the target is correct"
         (:state (get (targets-for
-                       "attacker" [def-int att-int]) 0)) => "defender")
-  (fact "the state of the defenders target is attacker"
+                       "attacker" [def-int att-int]) 0)) => "defender"
         (:state (get (targets-for
-                       "defender" [def-int att-int]) 0)) => "attacker" ))
+                       "defender" [def-int att-int]) 0)) => "attacker"))
 
 (facts "missiles"
   (fact "has-missiles? returns true when ship has at least one missile"
@@ -84,7 +82,7 @@
 (def alive05 {:components {:hull 4} :hits [216 100 70 30 14 2]})
 
 
-(facts "binomial-probability"
+(facts "binomial probabilities"
   (fact "Binomial coefficient is calculated correctly"
         (bin-coef 1 1) => 1
         (bin-coef 5 3) => 10
@@ -92,7 +90,31 @@
   (fact "binomial distribution is calculated correctly"
         (bin-dist 1 1 1/6) => (roughly 1/6)
         (bin-dist 2 1 1/6) => (roughly 5/18)
-        (bin-dist 5 3 2/6) => (roughly 40/243))
+        (bin-dist 5 3 2/6) => (roughly 40/243)))
+
+(facts "hit odds"
+  (fact "dice hit frequencies return correct values"
+        (dice-hit-freq 1 1/6) => {1 1 0 5}
+        (dice-hit-freq 2 1/6) => {2 1 0 5}
+        (dice-hit-freq 4 1/6) => {4 1 0 5}
+        (dice-hit-freq 1 2/6) => {1 2 0 4}
+        (dice-hit-freq 1 3/6) => {1 3 0 3}
+        (dice-hit-freq 1 4/6) => {1 4 0 2}
+        (dice-hit-freq 1 5/6) => {1 5 0 1})
+  (fact "adds a single weapon odds to all hit combinations"
+        (add-combinations [1 0] {1 1 0 5}) => [6 5]
+        (add-combinations [1 0] {2 2 0 4}) => [6 4]
+        (add-combinations [6 5 1 0 0] {2 2 0 4}) =future=> [36 20 4 10 2])
+  (fact "adds all hits for a type of weapon"
+        (all-weapon-combinations [1 0] 1 1 1/6) => [6 5]
+        (all-weapon-combinations [1 0] 2 1 1/6) => [36 25]
+        (all-weapon-combinations [1 0 0] 1 1 1/6) =future=> [6 5 1])
+  (fact "returns correct alive combinations for all hull levels"
+        (hull-hit-combinations 0 [6 5]) => 5
+        (hull-hit-combinations 1 [6 5 1]) => 6
+        (hull-hit-combinations 1 [36 20 4 10 2]) => 24
+        (hull-hit-combinations 3 [36 20 4 10 2]) => 36
+        (hull-hit-combinations 4 [1296 300 360 270 252 72]) => 1254)
   (fact "odds to be still alive are returned correctly"
         (alive-odds def-int) => 1
         (alive-odds def-cru) => 25/36
