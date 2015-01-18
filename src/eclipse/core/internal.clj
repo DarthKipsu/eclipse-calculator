@@ -63,14 +63,15 @@
   "Takes previous hits as a vector and a map containing hit frequencies for a 
   single weapon hit. Returns a new hits vector containing updated hit combinations."
   [hits freq]
-  (let [damage (first (keys freq))
+  (let [damage (some #(if (< 0 %) %) (keys freq))
         hull (count hits)]
     (loop [acc [(* 6 (get hits 0))] i 1]
       (if (>= i hull) acc
-        (recur (conj acc (if (<= i (freq damage))
+        (recur (conj acc (if (<= i damage)
                            (if (= 0 (get hits i)) (freq 0)
                              (* (get hits i) (freq 0)))
-                           (* damage (get hits (- i damage)))))
+                           (+ (* (freq damage) (get hits (- i damage)))
+                              (* (get hits i) (freq 0)))))
                (inc i))))))
 
 (defn all-weapon-combinations

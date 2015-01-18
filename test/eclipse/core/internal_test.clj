@@ -60,10 +60,10 @@
         (has-missiles? def-cru))
   (fact "defender interceptor does not have missiles"
         (has-missiles? def-int) => falsey)
-  (fact "adds attacker missiles to defendes hits vector"
+  (fact "adds attacker missiles to defences hits vector"
         (:hits (attack-with-missiles att-int def-int)) => [6 5]
         (:hits (attack-with-missiles def-cru def-int)) => [216 27]
-        (:hits (attack-with-missiles def-cru att-int)) => [7776 540 108]))
+        (:hits (attack-with-missiles def-cru att-int)) => [7776 540 648]))
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"
@@ -104,7 +104,10 @@
   (fact "adds a single weapon odds to all hit combinations"
         (add-combinations [1 0] {1 1 0 5}) => [6 5]
         (add-combinations [1 0] {2 2 0 4}) => [6 4]
-        (add-combinations [6 5 1 0 0] {2 2 0 4}) =future=> [36 20 4 10 2])
+        (add-combinations [1 0 0] {2 3 0 3}) =future=> [6 15 0]
+        (add-combinations [6 4 2 0] {1 2 0 4}) => [36 16 16 4]
+        (add-combinations [6 5 1 0 0] {2 2 0 4}) => [36 20 4 10 2]
+        (add-combinations [36  20 4 10 2 0] {2 1 0 5}) => [216 100 20 70 14 10])
   (fact "adds all hits for a type of weapon"
         (all-weapon-combinations [1 0] 1 1 1/6) => [6 5]
         (all-weapon-combinations [1 0] 2 1 1/6) => [36 25]
