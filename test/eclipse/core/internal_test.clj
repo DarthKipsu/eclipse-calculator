@@ -99,4 +99,6 @@
         (alive-odds att-int) => 2/3
         (alive-odds alive01) => 25/54
         (alive-odds alive02) => 85/108
-        (alive-odds alive03) => 25/27))
+        (alive-odds alive03) => 25/27
+        (alive-odds alive04) => 107/108
+        (alive-odds alive05) => 1))

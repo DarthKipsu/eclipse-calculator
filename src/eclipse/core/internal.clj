@@ -96,15 +96,20 @@
         hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)]
     (assoc ship-d :hits hp2-hits)))
 
+(defn hull-hit-combinations
+  "Takes the amount of hull as an integer and a vector containing hit combina-
+  tions and returns the number of combinations combined where the ship has not
+  yet received a fatal amount of hits."
+  [hull hits]
+  (let [indexes (range 1 (+ 2 hull))]
+    (apply + (map (fn [i] (get hits i)) indexes))))
+
 (defn alive-odds
-  "Takes a map presentation of a ship and returns the odds the ship is still alive
-  as a ratio."
+  "Takes a map presentation of a ship and returns the odds the ship is still
+  alive as a ratio."
   [ship]
   (let [hits (:hits ship)
-        all-comb (get hits 0)
+        all-combinations (get hits 0)
         hull (component ship :hull)]
-    (cond
-      (has-no-hits? ship) 1
-      (= 0 hull) (/ (get hits 1) all-comb)
-      (= 1 hull) (/ (+ (get hits 1) (get hits 2)) all-comb)
-      (= 2 hull) (/ (+ (get hits 1) (get hits 2) (get hits 3)) all-comb))))
+    (if (has-no-hits? ship) 1
+      (/ (hull-hit-combinations hull hits) all-combinations))))
