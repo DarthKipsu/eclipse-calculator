@@ -9,12 +9,11 @@
 
 (defn- has-no-hits? [ship]
   (let [hits (:hits ship)]
-    (and (empty? (:1 hits)) (empty? (:2 hits)) (empty? (:4 hits)))))
+    (= 1 (get hits 0))))
 
 (defn targets-for
   "Takes a string presentation of status and a list containing map presentations 
-  of ships, filters through the list and returns those with unmatching states.
-  TODO: filterv"
+  of ships, filters through the list and returns those with unmatching states."
   [state all-ships]
   (filterv (is-opponent-for? state) all-ships))
 
@@ -28,8 +27,8 @@
 
 (defn hit-once-odds
   "Takes two map presentations of ships and returns the odds for the first one
-  of them to hit the second with one dice. Includes shield and computer improvements.
-  Considers 6 always a hit and 1 always a miss as set by game rules."
+  of them to hit the second with one dice. Includes shield and computer improve-
+  ments. Considers 6 always a hit and 1 always a miss as set by game rules."
   [ship-a ship-d]
   (let [numerator (+ 1 (component ship-a :computer) (component ship-d :shield))]
     (if (> numerator 1)
@@ -53,52 +52,59 @@
   (let [q (- 1 p)]
     (* (bin-coef n k) (math/expt p k) (math/expt q (- n k)))))
 
-(defn hits-with-attacks
-  "Takes map containing current hits, attacker weapon count and odds for a single
-  hit as parameters and returns a new map containing the added hits."
-  [hits weapons odds]
-  (if (> weapons 0)
-    (assoc hits odds (if (get hits odds)
-                       (+ (get hits odds) weapons)
-                       weapons))
-    hits))
+(defn dice-hit-freq
+  "Takes a dice damage as an integer and hit odds as a ratio and returns the
+  frequency of each damage as a map."
+  [damage odds]
+  (let [damage-n (* 6 odds)]
+    {damage damage-n, 0 (- 6 damage-n)}))
+
+(defn add-combinations
+  "Takes previous hits as a vector and a map containing hit frequencies for a 
+  single weapon hit. Returns a new hits vector containing updated hit combinations."
+  [hits freq]
+  (let [damage (first (keys freq))
+        hull (count hits)]
+    (loop [acc [(* 6 (get hits 0))] i 1]
+      (if (>= i hull) acc
+        (recur (conj acc (if (<= i (freq damage))
+                           (if (= 0 (get hits i)) (freq 0)
+                             (* (get hits i) (freq 0)))
+                           (* damage (get hits (- i damage)))))
+               (inc i))))))
+
+(defn all-weapon-combinations
+  "Takes previous hits as vector, the number of weapons and damage value for those
+  weapons, as well as odds for hitting the target and returns a vector containing
+  combinations of all hits produced by those weapons, added on top of the combi-
+  nations of any previous hits."
+  [hits weapons damage odds]
+  (loop [acc hits i weapons]
+    (if (zero? i)
+      acc
+      (recur (add-combinations acc (dice-hit-freq damage odds)) (dec i)))))
 
 (defn attack-with-missiles
-  "Takes two map presentations of ships, the attacking ship and it's target. Returns
-  the target with updated hit counter according to attacker missiles."
+  "Takes two map presentations of ships, the attacking ship and it's target.
+  Returns the target with updated hit counter according to attacker missiles."
   [ship-a ship-d]
   (let [hp1 (component ship-a :dice1HPmissile)
         hp2 (component ship-a :dice2HPmissile)
         odds (hit-once-odds ship-a ship-d)
         hits (:hits ship-d)
-        hp1-new (hits-with-attacks (:1 hits) hp1 odds)
-        hp2-new (hits-with-attacks (:2 hits) hp2 odds)]
-    (assoc ship-d :hits (assoc hits :1 hp1-new :2 hp2-new))))
-
-(defn hit-odds-for-hit-type
-  "Takes a map containing all hits of a single weapon type (for example 1HP weapons)
-  and a number k indicating the desired amount of hits the ship has taken, for ex-
-  ample 0 if no desired amoutn of hits is zero. Returns the odds for the desired
-  amount of hits as a float."
-  [hits k]
-  (let [odds (reduce (fn [acc [p n]] (* acc (bin-dist n k p))) 1 hits)]
-    (if (== odds 1) 0 odds)))
-
-(defn- alive-multiplier [& odds]
-  (apply * (filter (complement zero?) odds)))
+        hp1-hits (all-weapon-combinations hits hp1 1 odds)
+        hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)]
+    (assoc ship-d :hits hp2-hits)))
 
 (defn alive-odds
-  "Takes a map presentation of a ship, calculates the odds for the ship to be still
-  alive and returns it as a float."
+  "Takes a map presentation of a ship and returns the odds the ship is still alive
+  as a ratio."
   [ship]
   (let [hits (:hits ship)
+        all-comb (get hits 0)
         hull (component ship :hull)]
     (cond
       (has-no-hits? ship) 1
-      (= 0 hull) (alive-multiplier (hit-odds-for-hit-type (:1 hits) 0)
-                                   (hit-odds-for-hit-type (:2 hits) 0)
-                                   (hit-odds-for-hit-type (:4 hits) 0))
-      (= 1 hull) (alive-multiplier (+ (hit-odds-for-hit-type (:1 hits) 0)
-                                      (hit-odds-for-hit-type (:1 hits) 1))
-                                   (hit-odds-for-hit-type (:2 hits) 0)
-                                   (hit-odds-for-hit-type (:4 hits) 0)))))
+      (= 0 hull) (/ (get hits 1) all-comb)
+      (= 1 hull) (/ (+ (get hits 1) (get hits 2)) all-comb)
+      (= 2 hull) (/ (+ (get hits 1) (get hits 2) (get hits 3)) all-comb))))
