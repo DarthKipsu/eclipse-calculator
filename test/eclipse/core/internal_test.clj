@@ -7,6 +7,9 @@
   {:state "attacker",
    :components {:dice1HPmissile 0,
                 :dice2HPmissile 1,
+                :dice1HP 1,
+                :dice2HP 0,
+                :dice4HP 0,
                 :computer 0,
                 :shield 0,
                 :hull 1}
@@ -17,6 +20,9 @@
   {:state "attacker",
    :components {:dice1HPmissile 1,
                 :dice2HPmissile 0,
+                :dice1HP 0,
+                :dice2HP 2,
+                :dice4HP 2,
                 :computer 5,
                 :shield -5,
                 :hull 5}
@@ -27,6 +33,9 @@
   {:state "defender",
    :components {:dice1HPmissile 0,
                 :dice2HPmissile 0,
+                :dice1HP 0,
+                :dice2HP 1,
+                :dice4HP 0,
                 :computer 0,
                 :shield 0,
                 :hull 0}
@@ -37,6 +46,9 @@
   {:state "defender",
    :components {:dice1HPmissile 1,
                 :dice2HPmissile 2,
+                :dice1HP 1,
+                :dice2HP 1,
+                :dice4HP 1,
                 :computer 2,
                 :shield -2,
                 :hull 1}
@@ -48,10 +60,8 @@
         (count (targets-for "attacker" [def-int att-int])) => 1
         (count (targets-for "defender" [def-int att-int att-int])) => 2 )
   (fact "the state of the target is correct"
-        (:state (get
-                  (targets-for "attacker" [def-int att-int]) 0)) => "defender"
-        (:state (get
-                  (targets-for "defender" [def-int att-int]) 0)) => "attacker"))
+        (:state (get (targets-for "attacker" [def-int att-int]) 0)) => "defender"
+        (:state (get (targets-for "defender" [def-int att-int]) 0)) => "attacker"))
 
 (facts "missiles"
   (fact "has-missiles? returns true when ship has at least one missile"
@@ -64,6 +74,13 @@
         (:hits (attack-with-missiles att-int def-int)) => [6 5]
         (:hits (attack-with-missiles def-cru def-int)) => [216 27]
         (:hits (attack-with-missiles def-cru att-int)) => [7776 540 648]))
+
+(facts "cannons"
+  (fact "adds attacker missiles to defenders hits vector"
+        (:hits (attack-with-cannons att-int def-int)) => [6 5]
+        (:hits (attack-with-cannons def-cru def-int)) => [216 27]
+        (:hits (attack-with-cannons def-cru att-int)) => [7776 540 648]
+        (:hits (attack-with-cannons def-cru att-dre)) => [216 125 25 25 5 25 5]))
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"

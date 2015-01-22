@@ -99,6 +99,20 @@
         hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)]
     (assoc ship-d :hits hp2-hits)))
 
+(defn attack-with-cannons
+  "Takes two map presentations of ships, the attacking ship and it's target.
+  Returns the target with updated hit counter according to attacker cannons"
+  [ship-a ship-d]
+  (let [hp1 (component ship-a :dice1HP)
+        hp2 (component ship-a :dice2HP)
+        hp4 (component ship-a :dice4HP)
+        odds (hit-once-odds ship-a ship-d)
+        hits (:hits ship-d)
+        hp1-hits (all-weapon-combinations hits hp1 1 odds)
+        hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)
+        hp4-hits (all-weapon-combinations hp2-hits hp4 4 odds)]
+    (assoc ship-d :hits hp4-hits)))
+
 (defn hull-hit-combinations
   "Takes the amount of hull as an integer and a vector containing hit combina-
   tions and returns the number of combinations where the ship has not yet
