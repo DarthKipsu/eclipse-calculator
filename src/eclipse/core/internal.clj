@@ -68,10 +68,12 @@
     (loop [acc [(* 6 (get hits 0))] i 1]
       (if (>= i hull) acc
         (recur (conj acc (if (<= i damage)
-                           (if (= 0 (get hits i)) (freq 0)
+                           (if (= 0 (get hits i)) (if (= 1 i) (freq 0) 0)
                              (* (get hits i) (freq 0)))
-                           (+ (* (freq damage) (get hits (- i damage)))
-                              (* (get hits i) (freq 0)))))
+                           (if (= 0 (get hits 1))
+                             (if (= (inc damage) i) (freq damage) 0)
+                                 (+ (* (freq damage) (get hits (- i damage)))
+                                    (* (get hits i) (freq 0))))))
                (inc i))))))
 
 (defn all-weapon-combinations

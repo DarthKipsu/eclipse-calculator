@@ -48,10 +48,10 @@
         (count (targets-for "attacker" [def-int att-int])) => 1
         (count (targets-for "defender" [def-int att-int att-int])) => 2 )
   (fact "the state of the target is correct"
-        (:state (get (targets-for
-                       "attacker" [def-int att-int]) 0)) => "defender"
-        (:state (get (targets-for
-                       "defender" [def-int att-int]) 0)) => "attacker"))
+        (:state (get
+                  (targets-for "attacker" [def-int att-int]) 0)) => "defender"
+        (:state (get
+                  (targets-for "defender" [def-int att-int]) 0)) => "attacker"))
 
 (facts "missiles"
   (fact "has-missiles? returns true when ship has at least one missile"
@@ -60,7 +60,7 @@
         (has-missiles? def-cru))
   (fact "defender interceptor does not have missiles"
         (has-missiles? def-int) => falsey)
-  (fact "adds attacker missiles to defences hits vector"
+  (fact "adds attacker missiles to defenders hits vector"
         (:hits (attack-with-missiles att-int def-int)) => [6 5]
         (:hits (attack-with-missiles def-cru def-int)) => [216 27]
         (:hits (attack-with-missiles def-cru att-int)) => [7776 540 648]))
@@ -75,13 +75,6 @@
   (fact "1/6 odds even against insane shield bonuses"
         (hit-once-odds def-int att-dre) => (/ 1 6)))
 
-(def alive01 {:components {:hull 0} :hits [216 100]})
-(def alive02 {:components {:hull 1} :hits [216 100 70]})
-(def alive03 {:components {:hull 2} :hits [216 100 70 30]})
-(def alive04 {:components {:hull 3} :hits [216 100 70 30 14]})
-(def alive05 {:components {:hull 4} :hits [216 100 70 30 14 2]})
-
-
 (facts "binomial probabilities"
   (fact "Binomial coefficient is calculated correctly"
         (bin-coef 1 1) => 1
@@ -91,6 +84,12 @@
         (bin-dist 1 1 1/6) => (roughly 1/6)
         (bin-dist 2 1 1/6) => (roughly 5/18)
         (bin-dist 5 3 2/6) => (roughly 40/243)))
+
+(def alive01 {:components {:hull 0} :hits [216 100]})
+(def alive02 {:components {:hull 1} :hits [216 100 70]})
+(def alive03 {:components {:hull 2} :hits [216 100 70 30]})
+(def alive04 {:components {:hull 3} :hits [216 100 70 30 14]})
+(def alive05 {:components {:hull 4} :hits [216 100 70 30 14 2]})
 
 (facts "hit odds"
   (fact "dice hit frequencies return correct values"
@@ -104,14 +103,17 @@
   (fact "adds a single weapon odds to all hit combinations"
         (add-combinations [1 0] {1 1 0 5}) => [6 5]
         (add-combinations [1 0] {2 2 0 4}) => [6 4]
-        (add-combinations [1 0 0] {2 3 0 3}) =future=> [6 15 0]
+        (add-combinations [1 0 0] {2 3 0 3}) => [6 3 0]
+        (add-combinations [1 0 0 0] {2 1 0 5}) => [6 5 0 1]
         (add-combinations [6 4 2 0] {1 2 0 4}) => [36 16 16 4]
+        (add-combinations [1 0 0 0 0] {2 1 0 5}) => [6 5 0 1 0]
         (add-combinations [6 5 1 0 0] {2 2 0 4}) => [36 20 4 10 2]
+        (add-combinations [1 0 0 0 0 0] {4 2 0 4}) => [6 4 0 0 0 2]
         (add-combinations [36  20 4 10 2 0] {2 1 0 5}) => [216 100 20 70 14 10])
   (fact "adds all hits for a type of weapon"
         (all-weapon-combinations [1 0] 1 1 1/6) => [6 5]
         (all-weapon-combinations [1 0] 2 1 1/6) => [36 25]
-        (all-weapon-combinations [1 0 0] 1 1 1/6) =future=> [6 5 1])
+        (all-weapon-combinations [1 0 0] 1 1 1/6) => [6 5 1])
   (fact "returns correct alive combinations for all hull levels"
         (hull-hit-combinations 0 [6 5]) => 5
         (hull-hit-combinations 1 [6 5 1]) => 6
