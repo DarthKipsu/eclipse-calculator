@@ -90,6 +90,8 @@
 (def alive03 {:components {:hull 2} :hits [216 100 70 30]})
 (def alive04 {:components {:hull 3} :hits [216 100 70 30 14]})
 (def alive05 {:components {:hull 4} :hits [216 100 70 30 14 2]})
+(def alive06 {:components {:hull 2} :hits [216 80 96 36]})
+(def alive07 {:components {:hull 1} :hits [1296 300 360]})
 
 (facts "hit odds"
   (fact "dice hit frequencies return correct values"
@@ -107,13 +109,16 @@
         (add-combinations [1 0 0 0] {2 1 0 5}) => [6 5 0 1]
         (add-combinations [6 4 2 0] {1 2 0 4}) => [36 16 16 4]
         (add-combinations [1 0 0 0 0] {2 1 0 5}) => [6 5 0 1 0]
+        (add-combinations [6 4 0 2 0 0] {2 2 0 4}) => [36 16 0 16 0 4]
         (add-combinations [6 5 1 0 0] {2 2 0 4}) => [36 20 4 10 2]
         (add-combinations [1 0 0 0 0 0] {4 2 0 4}) => [6 4 0 0 0 2]
         (add-combinations [36  20 4 10 2 0] {2 1 0 5}) => [216 100 20 70 14 10])
   (fact "adds all hits for a type of weapon"
         (all-weapon-combinations [1 0] 1 1 1/6) => [6 5]
         (all-weapon-combinations [1 0] 2 1 1/6) => [36 25]
-        (all-weapon-combinations [1 0 0] 1 1 1/6) => [6 5 1])
+        (all-weapon-combinations [1 0 0] 1 1 1/6) => [6 5 1]
+        (all-weapon-combinations [1 0 0 0] 2 2 2/6) => [36 16 0 16]
+        (all-weapon-combinations [6 5 1 0 0] 2 1 2/6) => [216 80 96 36 4])
   (fact "returns correct alive combinations for all hull levels"
         (hull-hit-combinations 0 [6 5]) => 5
         (hull-hit-combinations 1 [6 5 1]) => 6
@@ -128,4 +133,6 @@
         (alive-odds alive02) => 85/108
         (alive-odds alive03) => 25/27
         (alive-odds alive04) => 107/108
-        (alive-odds alive05) => 1))
+        (alive-odds alive05) => 1
+        (alive-odds alive06) => 212/216
+        (alive-odds alive07) => 660/1296))
