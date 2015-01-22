@@ -76,7 +76,7 @@
         (:hits (attack-with-missiles def-cru att-int)) => [7776 540 648]))
 
 (facts "cannons"
-  (fact "adds attacker missiles to defenders hits vector"
+  (fact "adds attacker cannons to defenders hits vector"
         (:hits (attack-with-cannons att-int def-int)) => [6 5]
         (:hits (attack-with-cannons def-cru def-int)) => [216 27]
         (:hits (attack-with-cannons def-cru att-int)) => [7776 540 648]

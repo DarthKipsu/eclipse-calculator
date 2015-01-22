@@ -59,6 +59,17 @@
   (let [damage-n (* 6 odds)]
     {damage damage-n, 0 (- 6 damage-n)}))
 
+(defn combination 
+  "Takes an array of previous hits, the index of the array to update, a map
+  containing frequencies for hit and miss and returns the updated combination
+  value for the received index."
+  [hits i freq]
+  (let [damage (some #(if (< 0 %) %) (keys freq))]
+    (if (<= i damage) (if (= 0 (get hits i)) (if (= 1 i) (freq 0) 0)
+                        (* (get hits i) (freq 0)))
+      (if (= 0 (get hits 1)) (if (= (inc damage) i) (freq damage) 0)
+        (+ (* (freq damage) (get hits (- i damage))) (* (get hits i) (freq 0)))))))
+
 (defn add-combinations
   "Takes previous hits as a vector and a map containing hit frequencies for a 
   single weapon hit. Returns a new hits vector containing updated hit combinations."
@@ -67,14 +78,7 @@
         hull (count hits)]
     (loop [acc [(* 6 (get hits 0))] i 1]
       (if (>= i hull) acc
-        (recur (conj acc (if (<= i damage)
-                           (if (= 0 (get hits i)) (if (= 1 i) (freq 0) 0)
-                             (* (get hits i) (freq 0)))
-                           (if (= 0 (get hits 1))
-                             (if (= (inc damage) i) (freq damage) 0)
-                                 (+ (* (freq damage) (get hits (- i damage)))
-                                    (* (get hits i) (freq 0))))))
-               (inc i))))))
+        (recur (conj acc (combination hits i freq)) (inc i))))))
 
 (defn all-weapon-combinations
   "Takes previous hits as vector, the number of weapons and damage value for those
