@@ -119,6 +119,13 @@
         (dice-hit-freq 1 3/6) => {1 3 0 3}
         (dice-hit-freq 1 4/6) => {1 4 0 2}
         (dice-hit-freq 1 5/6) => {1 5 0 1})
+  (fact "returns new combinations for a single hull value"
+        (combination [6 5 0] 1 {1 1 0 5}) => 25
+        (combination [6 5 0] 2 {1 1 0 5}) => 5
+        (combination [36 20 4 10 2] 1 {2 1 0 5}) => 100
+        (combination [36 20 4 10 2] 2 {2 1 0 5}) => 20
+        (combination [36 20 4 10 2] 3 {2 1 0 5}) => 70
+        (combination [36 20 4 10 2] 4 {2 1 0 5}) => 14)
   (fact "adds a single weapon odds to all hit combinations"
         (add-combinations [1 0] {1 1 0 5}) => [6 5]
         (add-combinations [1 0] {2 2 0 4}) => [6 4]
