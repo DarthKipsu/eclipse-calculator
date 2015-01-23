@@ -11,6 +11,25 @@
   (let [hits (:hits ship)]
     (= 1 (get hits 0))))
 
+(defn empty-hits-vector 
+  "takes a hull count and returns an empty hits vector with enough slots for 
+  each hull"
+  [hull]
+  (apply conj [1] (repeat (inc hull) 0)))
+
+(defn reform-single-ship
+  "Takes a vector containing a ship presentation returned by the ui and returns
+  a new ship map structure created based on the input."
+  [ship-json]
+  (let [part (get ship-json 0)]
+    {:state (get ship-json 1)
+     :components {:dice1HPmissile (part "dice1HPmissile")
+                  :dice2HPmissile (part "dice2HPmissile")
+                  :dice1HP (part "dice1HP") :dice2HP (part "dice2HP")
+                  :dice4HP (part "dice4HP") :computer (part "computer")
+                  :hull (part "hull") :shield (part "shield")}
+     :hits (empty-hits-vector (part "hull")) :alive 1}))
+
 (defn targets-for
   "Takes a string presentation of status and a list containing map presentations 
   of ships, filters through the list and returns those with unmatching states."

@@ -160,3 +160,23 @@
         (alive-odds alive05) => 1
         (alive-odds alive06) => 212/216
         (alive-odds alive07) => 660/1296))
+
+(facts "vector reforming helpers"
+  (fact "creates hit vectors of correct size"
+        (empty-hits-vector 0) => [1 0]
+        (empty-hits-vector 1) => [1 0 0]
+        (empty-hits-vector 2) => [1 0 0 0]
+        (empty-hits-vector 3) => [1 0 0 0 0])
+  (fact "turns one json originated vector to an usable form"
+    (reform-single-ship [{"type" "interceptor",
+      "one" nil, "two" "ionCannon", "three" "nuclearSource", "four" "nuclearDrive",
+      "dice1HPmissile" 0, "dice2HPmissile" 0,
+      "dice1HP" 1, "dice2HP" 0, "dice4HP" 0,
+      "computer" 0, "shield" 0, "hull" 0,
+      "initiative" 3,
+      "energy" 1, "speed" 1}, "defender"]) =>
+        {:state "defender",
+         :components {:dice1HPmissile 0, :dice2HPmissile 0,
+         :dice1HP 1, :dice2HP 0, :dice4HP 0,
+         :computer 0, :shield 0, :hull 0}
+         :hits [1 0], :alive 1}))
