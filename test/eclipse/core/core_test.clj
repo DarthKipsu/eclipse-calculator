@@ -31,8 +31,6 @@
                 :computer 0, :shield 0, :hull 0}
    :hits [1 0], :alive 1}])
 
-
-
-(facts "array reforming"
+(facts "vector reforming"
   (fact "transforms the vector received from ui to a more usable form"
-        (reform-ships json-2-int) =future=> reform-2-int))
+        (reform-ships json-2-int) => reform-2-int))
