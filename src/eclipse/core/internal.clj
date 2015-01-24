@@ -47,7 +47,8 @@
 (defn hit-once-odds
   "Takes two map presentations of ships and returns the odds for the first one
   of them to hit the second with one dice. Includes shield and computer improve-
-  ments. Considers 6 always a hit and 1 always a miss as set by game rules."
+  ments. Considers 6 always a hit and 1 always a miss as set by game rules. Takes
+  previous hits into consideration by multiplying the oss with odds to be alive."
   [ship-a ship-d]
   (let [prev-odds (alive-odds ship-d)]
   (let [numerator (+ 1 (component ship-a :computer) (component ship-d :shield))]
