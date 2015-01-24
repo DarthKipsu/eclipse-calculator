@@ -13,7 +13,7 @@
                 :computer 0,
                 :shield 0,
                 :hull 1}
-   :hits [36 20 4]
+   :hits [9 5 1]
    :alive 1})
 
 (def att-dre
@@ -61,7 +61,9 @@
         (count (targets-for "defender" [def-int att-int att-int])) => 2 )
   (fact "the state of the target is correct"
         (:state (get (targets-for "attacker" [def-int att-int]) 0)) => "defender"
-        (:state (get (targets-for "defender" [def-int att-int]) 0)) => "attacker"))
+        (:state (get (targets-for "defender" [def-int att-int]) 0)) => "attacker")
+  (fact "the targets are returned inside a vector"
+        (targets-for "defender" [def-int att-int att-dre]) => [att-int att-dre]))
 
 (facts "missiles"
   (fact "has-missiles? returns true when ship has at least one missile"
@@ -72,25 +74,25 @@
         (has-missiles? def-int) => falsey)
   (fact "adds attacker missiles to defenders hits vector"
         (:hits (attack-with-missiles att-int def-int)) => [6 5]
-        (:hits (attack-with-missiles def-cru def-int)) => [216 27]
-        (:hits (attack-with-missiles def-cru att-int)) => [7776 540 648]))
+        (:hits (attack-with-missiles def-cru def-int)) => [8 1]
+        (:hits (attack-with-missiles def-cru att-int)) => [243 40 28]))
 
 (facts "cannons"
   (fact "adds attacker cannons to defenders hits vector"
         (:hits (attack-with-cannons att-int def-int)) => [6 5]
-        (:hits (attack-with-cannons def-cru def-int)) => [216 27]
-        (:hits (attack-with-cannons def-cru att-int)) => [7776 540 648]
+        (:hits (attack-with-cannons def-cru def-int)) => [8 1]
+        (:hits (attack-with-cannons def-cru att-int)) => [243 40 28]
         (:hits (attack-with-cannons def-cru att-dre)) => [216 125 25 25 5 25 5]))
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"
-        (hit-once-odds att-int def-int) => (/ 1 6))
+        (hit-once-odds att-int def-int) => 1/6)
   (fact "only 5/6 odds even with insane computer bonus"
-        (hit-once-odds att-dre def-int) => (/ 5 6))
-  (fact "correct odds when computer and shield is present"
-        (hit-once-odds att-dre def-cru) => (/ 4 6))
+        (hit-once-odds att-dre def-int) => 5/6)
   (fact "1/6 odds even against insane shield bonuses"
-        (hit-once-odds def-int att-dre) => (/ 1 6)))
+        (hit-once-odds def-int att-dre) => 1/6)
+  (fact "multiplies the dice odds with alive odds to account for previous hits"
+        (hit-once-odds att-dre def-cru) => 25/54))
 
 (facts "binomial probabilities"
   (fact "Binomial coefficient is calculated correctly"
@@ -115,10 +117,11 @@
         (dice-hit-freq 1 1/6) => {1 1 0 5}
         (dice-hit-freq 2 1/6) => {2 1 0 5}
         (dice-hit-freq 4 1/6) => {4 1 0 5}
-        (dice-hit-freq 1 2/6) => {1 2 0 4}
-        (dice-hit-freq 1 3/6) => {1 3 0 3}
-        (dice-hit-freq 1 4/6) => {1 4 0 2}
-        (dice-hit-freq 1 5/6) => {1 5 0 1})
+        (dice-hit-freq 1 2/6) => {1 1 0 2}
+        (dice-hit-freq 1 3/6) => {1 1 0 1}
+        (dice-hit-freq 1 4/6) => {1 2 0 1}
+        (dice-hit-freq 1 5/6) => {1 5 0 1}
+        (dice-hit-freq 1 25/54) => {1 25 0 29})
   (fact "returns new combinations for a single hull value"
         (combination [6 5 0] 1 {1 1 0 5}) => 25
         (combination [6 5 0] 2 {1 1 0 5}) => 5
@@ -128,21 +131,21 @@
         (combination [36 20 4 10 2] 4 {2 1 0 5}) => 14)
   (fact "adds a single weapon odds to all hit combinations"
         (add-combinations [1 0] {1 1 0 5}) => [6 5]
-        (add-combinations [1 0] {2 2 0 4}) => [6 4]
-        (add-combinations [1 0 0] {2 3 0 3}) => [6 3 0]
+        (add-combinations [1 0] {2 1 0 2}) => [3 2]
+        (add-combinations [1 0 0] {2 1 0 1}) => [2 1 0]
         (add-combinations [1 0 0 0] {2 1 0 5}) => [6 5 0 1]
-        (add-combinations [6 4 2 0] {1 2 0 4}) => [36 16 16 4]
+        (add-combinations [3 2 1 0] {1 1 0 2}) => [9 4 4 1]
         (add-combinations [1 0 0 0 0] {2 1 0 5}) => [6 5 0 1 0]
-        (add-combinations [6 4 0 2 0 0] {2 2 0 4}) => [36 16 0 16 0 4]
-        (add-combinations [6 5 1 0 0] {2 2 0 4}) => [36 20 4 10 2]
-        (add-combinations [1 0 0 0 0 0] {4 2 0 4}) => [6 4 0 0 0 2]
-        (add-combinations [36  20 4 10 2 0] {2 1 0 5}) => [216 100 20 70 14 10])
+        (add-combinations [3 2 0 1 0 0] {2 1 0 2}) => [9 4 0 4 0 1]
+        (add-combinations [6 5 1 0 0] {2 1 0 2}) => [18 10 2 5 1]
+        (add-combinations [1 0 0 0 0 0] {4 1 0 2}) => [3 2 0 0 0 1]
+        (add-combinations [18 10 2 5 1 0] {2 1 0 5}) => [108 50 10 35 7 5])
   (fact "adds all hits for a type of weapon"
         (all-weapon-combinations [1 0] 1 1 1/6) => [6 5]
         (all-weapon-combinations [1 0] 2 1 1/6) => [36 25]
         (all-weapon-combinations [1 0 0] 1 1 1/6) => [6 5 1]
-        (all-weapon-combinations [1 0 0 0] 2 2 2/6) => [36 16 0 16]
-        (all-weapon-combinations [6 5 1 0 0] 2 1 2/6) => [216 80 96 36 4])
+        (all-weapon-combinations [1 0 0 0] 2 2 2/6) => [9 4 0 4]
+        (all-weapon-combinations [6 5 1 0 0] 2 1 2/6) => [54 20 24 9 1])
   (fact "returns correct alive combinations for all hull levels"
         (hull-hit-combinations 0 [6 5]) => 5
         (hull-hit-combinations 1 [6 5 1]) => 6

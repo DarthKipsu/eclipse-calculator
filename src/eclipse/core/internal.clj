@@ -49,10 +49,11 @@
   of them to hit the second with one dice. Includes shield and computer improve-
   ments. Considers 6 always a hit and 1 always a miss as set by game rules."
   [ship-a ship-d]
+  (let [prev-odds (alive-odds ship-d)]
   (let [numerator (+ 1 (component ship-a :computer) (component ship-d :shield))]
     (if (> numerator 1)
-      (if (< numerator 6) (/ numerator 6) (/ 5 6))
-      (/ 1 6))))
+      (if (< numerator 6) (* prev-odds (/ numerator 6)) (* prev-odds(/ 5 6)))
+      (* prev-odds (/ 1 6))))))
 
 (defn bin-coef 
   "Takes two nonnegative integers n and k, where k is greater than or equal to n
@@ -75,8 +76,8 @@
   "Takes a dice damage as an integer and hit odds as a ratio and returns the
   frequency of each damage as a map."
   [damage odds]
-  (let [damage-n (* 6 odds)]
-    {damage damage-n, 0 (- 6 damage-n)}))
+  (let [damage-n (numerator odds)]
+    {damage damage-n, 0 (- (denominator odds) damage-n)}))
 
 (defn combination 
   "Takes an array of previous hits, the index of the array to update, a map
@@ -95,7 +96,7 @@
   [hits freq]
   (let [damage (some #(if (< 0 %) %) (keys freq))
         hull (count hits)]
-    (loop [acc [(* 6 (get hits 0))] i 1]
+    (loop [acc [(* (apply + (vals freq)) (get hits 0))] i 1]
       (if (>= i hull) acc
         (recur (conj acc (combination hits i freq)) (inc i))))))
 
