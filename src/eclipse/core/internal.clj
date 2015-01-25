@@ -111,18 +111,6 @@
       acc
       (recur (add-combinations acc (dice-hit-freq damage odds)) (dec i)))))
 
-(defn attack-with-missiles
-  "Takes two map presentations of ships, the attacking ship and it's target.
-  Returns the target with updated hit counter according to attacker missiles."
-  [ship-a ship-d]
-  (let [hp1 (component ship-a :dice1HPmissile)
-        hp2 (component ship-a :dice2HPmissile)
-        odds (hit-once-odds ship-a ship-d)
-        hits (:hits ship-d)
-        hp1-hits (all-weapon-combinations hits hp1 1 odds)
-        hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)]
-    (assoc ship-d :hits hp2-hits)))
-
 (defn attack-with-cannons
   "Takes two map presentations of ships, the attacking ship and it's target.
   Returns the target with updated hit counter according to attacker cannons"
@@ -137,13 +125,19 @@
         hp4-hits (all-weapon-combinations hp2-hits hp4 4 odds)]
     (assoc ship-d :hits hp4-hits)))
 
-(defn has-missiles?
-  "Takes a map presentation of a ship and checks if the ship has any missile
-  weaponry installed. Returns true if it has."
-  [ship]
-  (or
-    (< 0 (component ship :dice1HPmissile))
-    (< 0 (component ship :dice2HPmissile))))
+(defn attack-with-missiles
+  "Takes two map presentations of ships, the attacking ship and it's target.
+  Returns the target with updated hit counter according to attacker missiles,
+  as well as new alive odds for calculating future hit odds."
+  [ship-a ship-d]
+  (let [hp1 (component ship-a :dice1HPmissile)
+        hp2 (component ship-a :dice2HPmissile)
+        odds (hit-once-odds ship-a ship-d)
+        hits (:hits ship-d)
+        hp1-hits (all-weapon-combinations hits hp1 1 odds)
+        hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)
+        ship-d-with-hits (assoc ship-d :hits hp2-hits)]
+    (assoc ship-d-with-hits :alive (alive-odds ship-d-with-hits))))
 
 (defn target-and-attack-missiles
   "Takes a map presentation of attacking ship and a vector containing all ships,
@@ -157,6 +151,14 @@
         (recur (assoc new-ships (:init (targets i))
                       (attack-with-missiles ship-a (targets i)))
                (inc i))))))
+
+(defn has-missiles?
+  "Takes a map presentation of a ship and checks if the ship has any missile
+  weaponry installed. Returns true if it has."
+  [ship]
+  (or
+    (< 0 (component ship :dice1HPmissile))
+    (< 0 (component ship :dice2HPmissile))))
 
 (defn missiles-round
   "Takes a map presentation of ships, checks each ship for missiles and if they

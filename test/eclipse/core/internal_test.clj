@@ -30,7 +30,14 @@
         (:hits (attack-with-missiles def-cru att-int)) => [243 40 28])
   (fact "targets and attacks correct enemies with missiles"
         (target-and-attack-missiles att-int [att-int def-int att-dre]) => 
-          [att-int def-int-with-hit att-dre]))
+          [att-int def-int-with-hit att-dre]
+        (target-and-attack-missiles att-int [att-int def-int def-int att-dre]) => 
+          [att-int def-int-with-hit def-int att-dre]
+        (target-and-attack-missiles missile-01 [missile-01 missile-02]) => 
+          [missile-01 missile-02-hit-2]
+        (target-and-attack-missiles 
+          missile-01 [missile-01 missile-02-hit-2 missile-03]) => 
+          [missile-01 missile-02-hit-4 missile-03-hit-2]))
 
 (facts "cannons"
   (fact "adds attacker cannons to defenders hits vector"
