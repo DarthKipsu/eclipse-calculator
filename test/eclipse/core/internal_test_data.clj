@@ -136,6 +136,20 @@
    :alive 1
    :init 0})
 
+(def missile-01-hit-2
+  {:state "defender",
+   :components {:dice1HPmissile 1,
+                :dice2HPmissile 1,
+                :dice1HP 0,
+                :dice2HP 1,
+                :dice4HP 0,
+                :computer 2,
+                :shield 0,
+                :hull 1}
+   :hits [9 1 4]
+   :alive 5/9
+   :init 0})
+
 (def missile-02
   {:state "attacker",
    :components {:dice1HPmissile 0,

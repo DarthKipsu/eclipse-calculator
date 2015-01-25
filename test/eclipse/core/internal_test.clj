@@ -37,7 +37,12 @@
           [missile-01 missile-02-hit-2]
         (target-and-attack-missiles 
           missile-01 [missile-01 missile-02-hit-2 missile-03]) => 
-          [missile-01 missile-02-hit-4 missile-03-hit-2]))
+          [missile-01 missile-02-hit-4 missile-03-hit-2])
+  (fact "plays a missile round for all ships"
+        (missiles-round [missile-01 missile-02 missile-03]) =>
+          [missile-01-hit-2 missile-02-hit-2 missile-03]
+        (missiles-round [missile-01 missile-02-hit-2 missile-03]) =>
+          [missile-01-hit-2 missile-02-hit-4 missile-03-hit-2]))
 
 (facts "cannons"
   (fact "adds attacker cannons to defenders hits vector"

@@ -166,10 +166,10 @@
   of ships with updated hit vectors."
   [ships]
   (loop [new-ships ships i 0]
-   (let [ship (ships i)]
     (if (= i (count ships)) new-ships 
-      (recur (if (has-missiles? ship) (target-and-attack-missiles ship new-ships)
-              new-ships) (inc i))))))
+      (recur (if (has-missiles? (ships i))
+               (target-and-attack-missiles (ships i) new-ships)
+              new-ships) (inc i)))))
 
 (defn hull-hit-combinations
   "Takes the amount of hull as an integer and a vector containing hit combina-
