@@ -58,7 +58,9 @@
 (facts "filter and return targets"
   (fact "the correct amount of target ships can be found"
         (count (targets-for "attacker" [def-int att-int])) => 1
-        (count (targets-for "defender" [def-int att-int att-int])) => 2 )
+        (count (targets-for "defender" [def-int def-int])) => 0
+        (count (targets-for "defender" [def-int att-int att-int])) => 2 
+        (count (targets-for "defender" [def-int att-dre att-dre])) => 1)
   (fact "the state of the target is correct"
         (:state (get (targets-for "attacker" [def-int att-int]) 0)) => "defender"
         (:state (get (targets-for "defender" [def-int att-int]) 0)) => "attacker")

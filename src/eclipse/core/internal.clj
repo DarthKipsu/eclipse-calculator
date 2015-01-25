@@ -1,8 +1,8 @@
 (ns eclipse.core.internal
   (:require [clojure.math.numeric-tower :as math]))
 
-(defn- is-opponent-for? [state]
-  (fn [target] (not= state (:state target))))
+(defn- is-opponent-for? [state, target]
+  (not= state (:state target)))
 
 (defn- component [ship component]
   (get-in ship [:components component]))
@@ -32,17 +32,15 @@
 
 (defn targets-for
   "Takes a string presentation of status and a list containing map presentations 
-  of ships, filters through the list and returns those with unmatching states."
+  of ships, loops through the list and returns those with unmatching states, until
+  one opponent with 100% odds for being alive is found."
   [state all-ships]
-  (filterv (is-opponent-for? state) all-ships))
-
-(defn has-missiles?
-  "Takes a map presentation of a ship and checks if the ship has any missile
-  weaponry installed. Returns true if it has."
-  [ship]
-  (or
-    (< 0 (component ship :dice1HPmissile))
-    (< 0 (component ship :dice2HPmissile))))
+  (loop [targets [] i 0 has-enough false]
+    (if (or has-enough (= i (count all-ships))) targets
+      (let [ship (all-ships i)
+            opponent (is-opponent-for? state ship)]
+        (recur (if opponent (conj targets ship) targets)
+               (inc i) (if (and opponent (= 1 (alive-odds ship))) true false))))))
 
 (defn hit-once-odds
   "Takes two map presentations of ships and returns the odds for the first one
@@ -137,6 +135,14 @@
         hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)
         hp4-hits (all-weapon-combinations hp2-hits hp4 4 odds)]
     (assoc ship-d :hits hp4-hits)))
+
+(defn has-missiles?
+  "Takes a map presentation of a ship and checks if the ship has any missile
+  weaponry installed. Returns true if it has."
+  [ship]
+  (or
+    (< 0 (component ship :dice1HPmissile))
+    (< 0 (component ship :dice2HPmissile))))
 
 (defn hull-hit-combinations
   "Takes the amount of hull as an integer and a vector containing hit combina-
