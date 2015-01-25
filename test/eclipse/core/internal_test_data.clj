@@ -37,7 +37,22 @@
                 :shield 0,
                 :hull 0}
    :hits [1 0]
-   :alive 1})
+   :alive 1
+   :init 1})
+
+(def def-int-with-hit
+  {:state "defender",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :dice1HP 0,
+                :dice2HP 1,
+                :dice4HP 0,
+                :computer 0,
+                :shield 0,
+                :hull 0}
+   :hits [6 5]
+   :alive 1
+   :init 1})
 
 (def def-cru
   {:state "defender",
@@ -81,7 +96,8 @@
                 :shield 0,
                 :hull 0}
    :hits [1 0],
-   :alive 1})
+   :alive 1
+   :init 0})
 
 (def reform-02
   {:state "defender",
@@ -94,7 +110,8 @@
                 :shield 0,
                 :hull 5}
    :hits [1 0 0 0 0 0 0],
-   :alive 1})
+   :alive 1
+   :init 1})
 
 (def alive01 {:components {:hull 0} :hits [216 100]})
 (def alive02 {:components {:hull 1} :hits [216 100 70]})

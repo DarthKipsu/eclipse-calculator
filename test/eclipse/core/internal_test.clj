@@ -14,7 +14,8 @@
         (:state (get (targets-for "attacker" [def-int att-int]) 0)) => "defender"
         (:state (get (targets-for "defender" [def-int att-int]) 0)) => "attacker")
   (fact "the targets are returned inside a vector"
-        (targets-for "defender" [def-int att-int att-dre]) => [att-int att-dre]))
+        (targets-for "defender" [def-int att-int att-dre]) => [att-int att-dre]
+        (targets-for "attacker" [att-int def-int att-dre]) => [def-int]))
 
 (facts "missiles"
   (fact "has-missiles? returns true when ship has at least one missile"
@@ -26,7 +27,10 @@
   (fact "adds attacker missiles to defenders hits vector"
         (:hits (attack-with-missiles att-int def-int)) => [6 5]
         (:hits (attack-with-missiles def-cru def-int)) => [8 1]
-        (:hits (attack-with-missiles def-cru att-int)) => [243 40 28]))
+        (:hits (attack-with-missiles def-cru att-int)) => [243 40 28])
+  (fact "targets and attacks correct enemies with missiles"
+        (target-and-attack-missiles att-int [att-int def-int att-dre]) => 
+          [att-int def-int-with-hit att-dre]))
 
 (facts "cannons"
   (fact "adds attacker cannons to defenders hits vector"
@@ -114,5 +118,5 @@
         (empty-hits-vector 2) => [1 0 0 0]
         (empty-hits-vector 3) => [1 0 0 0 0])
   (fact "turns a json originated vector to an usable form"
-        (reform-single-ship json-01) => reform-01
-        (reform-single-ship json-02) => reform-02))
+        (reform-single-ship 0 json-01) => reform-01
+        (reform-single-ship 1 json-02) => reform-02))

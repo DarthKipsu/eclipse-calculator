@@ -11,6 +11,7 @@
   (let [hits (:hits ship)]
     (= 1 (get hits 0))))
 
+
 (defn empty-hits-vector 
   "takes a hull count and returns an empty hits vector with enough slots for 
   each hull"
@@ -20,7 +21,7 @@
 (defn reform-single-ship
   "Takes a vector containing a ship presentation returned by the ui and returns
   a new ship map structure created based on the input."
-  [ship-json]
+  [i ship-json]
   (let [part (get ship-json 0)]
     {:state (get ship-json 1)
      :components {:dice1HPmissile (part "dice1HPmissile")
@@ -28,7 +29,7 @@
                   :dice1HP (part "dice1HP") :dice2HP (part "dice2HP")
                   :dice4HP (part "dice4HP") :computer (part "computer")
                   :hull (part "hull") :shield (part "shield")}
-     :hits (empty-hits-vector (part "hull")) :alive 1}))
+     :hits (empty-hits-vector (part "hull")) :alive 1 :init i}))
 
 (defn targets-for
   "Takes a string presentation of status and a list containing map presentations 
@@ -143,6 +144,30 @@
   (or
     (< 0 (component ship :dice1HPmissile))
     (< 0 (component ship :dice2HPmissile))))
+
+(defn target-and-attack-missiles
+  "Takes a map presentation of attacking ship and a vector containing all ships,
+  chooses targets to the attacker, attacks them and returns a new vector containing
+  updated hit vectors for affected ships."
+  [ship-a ships]
+  (let [targets (targets-for (:state ship-a) ships)
+        end-i (count targets)]
+    (loop [new-ships ships i 0]
+      (if (= i end-i) new-ships
+        (recur (assoc new-ships (:init (targets i))
+                      (attack-with-missiles ship-a (targets i)))
+               (inc i))))))
+
+(defn missiles-round
+  "Takes a map presentation of ships, checks each ship for missiles and if they
+  have any, adds those attacks to enemy hit vectors. Returns a new map presentation
+  of ships with updated hit vectors."
+  [ships]
+  (loop [new-ships ships i 0]
+   (let [ship (ships i)]
+    (if (= i (count ships)) new-ships 
+      (recur (if (has-missiles? ship) (target-and-attack-missiles ship new-ships)
+              new-ships) (inc i))))))
 
 (defn hull-hit-combinations
   "Takes the amount of hull as an integer and a vector containing hit combina-
