@@ -52,7 +52,11 @@
         (:hits (attack-with-cannons def-cru att-dre)) => [216 125 25 25 5 25 5])
   (fact "targets and attacks correct enemies with missiles"
         (target-and-attack-cannons att-int-2 [att-int-2 def-int att-dre]) => 
-          [att-int-2 def-int-with-hit att-dre])
+          [att-int-2 def-int-with-hit att-dre]
+        (target-and-attack-cannons cannon-01 [cannon-01 cannon-03 cannon-02]) => 
+          [cannon-01 cannon-03-hit cannon-02]
+        (target-and-attack-cannons cannon-03 [cannon-01 cannon-03 cannon-02]) => 
+          [cannon-01-hit cannon-03 cannon-02])
   (fact "plays a cannon round for all ships"
         (cannons-round [missile-01 missile-02 missile-03]) =>
           [missile-01-hit-2 missile-02-hit-2 missile-03]
