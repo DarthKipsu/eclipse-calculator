@@ -122,8 +122,30 @@
         hits (:hits ship-d)
         hp1-hits (all-weapon-combinations hits hp1 1 odds)
         hp2-hits (all-weapon-combinations hp1-hits hp2 2 odds)
-        hp4-hits (all-weapon-combinations hp2-hits hp4 4 odds)]
-    (assoc ship-d :hits hp4-hits)))
+        hp4-hits (all-weapon-combinations hp2-hits hp4 4 odds)
+        ship-d-with-hits (assoc ship-d :hits hp4-hits)]
+    (assoc ship-d-with-hits :alive (alive-odds ship-d-with-hits))))
+
+(defn target-and-attack-cannons
+  "Takes a map presentation of attacking ship and a vector containing all ships,
+  chooses targets to the attacker, attacks them and returns a new vector containing
+  updated hit vectors for affected ships."
+  [ship-a ships]
+  (let [targets (targets-for (:state ship-a) ships)
+        end-i (count targets)]
+    (loop [new-ships ships i 0]
+      (if (= i end-i) new-ships
+        (recur (assoc new-ships (:init (targets i))
+                      (attack-with-cannons ship-a (targets i)))
+               (inc i))))))
+
+(defn cannons-round
+  "Takes a map presentation of ships and adds attacks from cannons to to enemy
+  hit vectors. Returns a new map presentation of ships with updated hit vectors."
+  [ships]
+  (loop [new-ships ships i 0]
+    (if (= i (count ships)) new-ships 
+      (recur (target-and-attack-missiles (ships i) new-ships) (inc i)))))
 
 (defn attack-with-missiles
   "Takes two map presentations of ships, the attacking ship and it's target.

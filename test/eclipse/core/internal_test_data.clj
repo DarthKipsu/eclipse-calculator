@@ -13,6 +13,19 @@
    :hits [9 5 1]
    :alive 1})
 
+(def att-int-2
+  {:state "attacker",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 1,
+                :dice1HP 0,
+                :dice2HP 1,
+                :dice4HP 0,
+                :computer 0,
+                :shield 0,
+                :hull 1}
+   :hits [9 5 1]
+   :alive 1})
+
 (def att-dre
   {:state "attacker",
    :components {:dice1HPmissile 1,
@@ -126,7 +139,7 @@
   {:state "defender",
    :components {:dice1HPmissile 1,
                 :dice2HPmissile 1,
-                :dice1HP 0,
+                :dice1HP 1,
                 :dice2HP 1,
                 :dice4HP 0,
                 :computer 2,
@@ -140,7 +153,7 @@
   {:state "defender",
    :components {:dice1HPmissile 1,
                 :dice2HPmissile 1,
-                :dice1HP 0,
+                :dice1HP 1,
                 :dice2HP 1,
                 :dice4HP 0,
                 :computer 2,
@@ -196,8 +209,8 @@
   {:state "attacker",
    :components {:dice1HPmissile 2,
                 :dice2HPmissile 0,
-                :dice1HP 0,
-                :dice2HP 2,
+                :dice1HP 2,
+                :dice2HP 0,
                 :dice4HP 0,
                 :computer 3,
                 :shield -1,
@@ -210,8 +223,8 @@
   {:state "attacker",
    :components {:dice1HPmissile 2,
                 :dice2HPmissile 0,
-                :dice1HP 0,
-                :dice2HP 2,
+                :dice1HP 2,
+                :dice2HP 0,
                 :dice4HP 0,
                 :computer 3,
                 :shield -1,

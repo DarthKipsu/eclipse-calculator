@@ -49,7 +49,15 @@
         (:hits (attack-with-cannons att-int def-int)) => [6 5]
         (:hits (attack-with-cannons def-cru def-int)) => [8 1]
         (:hits (attack-with-cannons def-cru att-int)) => [243 40 28]
-        (:hits (attack-with-cannons def-cru att-dre)) => [216 125 25 25 5 25 5]))
+        (:hits (attack-with-cannons def-cru att-dre)) => [216 125 25 25 5 25 5])
+  (fact "targets and attacks correct enemies with missiles"
+        (target-and-attack-cannons att-int-2 [att-int-2 def-int att-dre]) => 
+          [att-int-2 def-int-with-hit att-dre])
+  (fact "plays a cannon round for all ships"
+        (cannons-round [missile-01 missile-02 missile-03]) =>
+          [missile-01-hit-2 missile-02-hit-2 missile-03]
+        (cannons-round [missile-01 missile-02-hit-2 missile-03]) =>
+          [missile-01-hit-2 missile-02-hit-4 missile-03-hit-2]))
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"
