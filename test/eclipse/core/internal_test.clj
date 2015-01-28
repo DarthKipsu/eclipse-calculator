@@ -156,6 +156,8 @@
 
 (facts "winner odds"
   (fact "returns corrects odds for player to be alive while no opponents are left"
+        (opponent-destroyed 0.100 0.855) => (roughly 0.77 1E-3)
+        (opponent-destroyed 0.666 0.999) => (roughly 0.333 1E-3)
         (opponent-destroyed 0.535 0.632) => (roughly 0.293 1E-3)
         (opponent-destroyed 0.632 0.535) => (roughly 0.197 1E-3))
   (fact "returns win odds for defender side"
@@ -164,7 +166,15 @@
           (roughly 0.82 1E-3)
         (win-odds-defender [alive13 alive12 alive08] [alive10 alive11]) =>
           (roughly 0.005 1E-3)
-        (win-odds-defender [alive14] [alive14]) => 0.0))
+        (win-odds-defender [alive14] [alive14]) => 0.0
+        (win-odds-defender [alive14] [alive15]) => 1.0)
+  (fact "returns win odds for attacker side"
+        (win-odds-attacker 0.5 []) => 0.5
+        (win-odds-attacker 0.126 []) => 0.874
+        (win-odds-attacker 0.75 []) => 0.25
+        (win-odds-attacker 0.0 [alive14]) => 0.0
+        (win-odds-attacker 0.0 [alive15]) => 1.0))
+        
 
 (facts "vector reforming helpers"
   (fact "creates hit vectors of correct size"

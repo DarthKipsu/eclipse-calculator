@@ -245,3 +245,11 @@
     (if (== 0 a-none-alive)
       0.0 
       (/ a-destroyed (+ a-destroyed d-destroyed)))))
+
+(defn win-odds-attacker
+  "Takes the odds for the defender to win and a vector containing defender ships
+  as a parameter and returns the odds the attacker will win ass a double."
+  [d-win-odds d-ships]
+  (if (and (== 0 d-win-odds) (== 0 (none-alive-odds d-ships)))
+    0.0
+    (- 1 d-win-odds)))

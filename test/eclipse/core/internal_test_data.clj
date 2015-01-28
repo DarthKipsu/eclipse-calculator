@@ -142,6 +142,7 @@
 (def alive12 {:alive 120/256})
 (def alive13 {:alive 1218/2187})
 (def alive14 {:alive 1})
+(def alive15 {:alive 0})
 
 (def missile-01
   {:state "defender",
