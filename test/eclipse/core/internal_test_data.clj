@@ -135,6 +135,14 @@
 (def alive06 {:components {:hull 2} :hits [216 80 96 36]})
 (def alive07 {:components {:hull 1} :hits [1296 300 360]})
 
+(def alive08 {:alive 1/2})
+(def alive09 {:alive 1/27})
+(def alive10 {:alive 107/108})
+(def alive11 {:alive 25/27})
+(def alive12 {:alive 120/256})
+(def alive13 {:alive 1218/2187})
+(def alive14 {:alive 1})
+
 (def missile-01
   {:state "defender",
    :components {:dice1HPmissile 1,

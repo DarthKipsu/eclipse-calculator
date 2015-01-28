@@ -11,7 +11,6 @@
   (let [hits (:hits ship)]
     (= 1 (get hits 0))))
 
-
 (defn empty-hits-vector 
   "takes a hull count and returns an empty hits vector with enough slots for 
   each hull"
@@ -214,3 +213,35 @@
       (recur (if (has-missiles? (ships i))
                (target-and-attack-missiles (ships i) new-ships)
               new-ships) (inc i)))))
+
+(defn alive-odds-formatted
+  "Takes a vector containing map presentations of ships and returns another 
+  vector containing formatted alive odds for each ship."
+  [ships]
+  (mapv (fn [ship] (format "%.1f" (* 100 (double (:alive ship))))) ships))
+
+(defn none-alive-odds
+  "Takes a vector containing map presentations of ships and returns the odds for 
+  none of the ships to be alive as a double"
+  [ships]
+  (reduce (fn [acc ship] (* acc (- 1 (double (:alive ship))))) 1 ships))
+
+(defn opponent-destroyed
+  "Takes the odds that none of the players ships are alive and the odds for none 
+  of the opponent ships to be alive as doubles and returns the odds at least one
+  of the player ships survived and none of the opponent ships did."
+  [n-a-odds-a n-a-odds-b]
+  (* (- 1 n-a-odds-a) n-a-odds-b))
+
+(defn win-odds-defender
+  "Takes a vector containing map presentations for both the defender and attacker
+  and checks all ship alive odds and based on them returns the odds for the 
+  defenders side to win as a double"
+  [d-ships a-ships]
+  (let [d-none-alive (none-alive-odds d-ships)
+        a-none-alive (none-alive-odds a-ships)
+        a-destroyed (opponent-destroyed d-none-alive a-none-alive)
+        d-destroyed (opponent-destroyed a-none-alive d-none-alive)]
+    (if (== 0 a-none-alive)
+      0.0 
+      (/ a-destroyed (+ a-destroyed d-destroyed)))))

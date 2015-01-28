@@ -69,7 +69,6 @@
         (cannons-round (missiles-round [cannon-04 cannon-05]) 3) =>
           [cannon-04-hit-3 cannon-05-hit-3-and-missiles]))
 
-
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"
         (hit-once-odds att-int def-int) => 1/6)
@@ -129,7 +128,9 @@
         (hull-hit-combinations 1 [6 5 1]) => 6
         (hull-hit-combinations 1 [36 20 4 10 2]) => 24
         (hull-hit-combinations 3 [36 20 4 10 2]) => 36
-        (hull-hit-combinations 4 [1296 300 360 270 252 72]) => 1254)
+        (hull-hit-combinations 4 [1296 300 360 270 252 72]) => 1254))
+
+(facts "alive odds"
   (fact "odds to be still alive are returned correctly"
         (alive-odds def-int) => 1
         (alive-odds def-cru) => 25/36
@@ -140,7 +141,30 @@
         (alive-odds alive04) => 107/108
         (alive-odds alive05) => 1
         (alive-odds alive06) => 212/216
-        (alive-odds alive07) => 660/1296))
+        (alive-odds alive07) => 660/1296)
+  (fact "formatted alive percentages are returned for a group of ships"
+        (alive-odds-formatted [missile-03 cannon-03-hit]) => ["100,0" "66,7"]
+        (alive-odds-formatted [alive08 alive09 alive10]) => ["50,0" "3,7" "99,1"]
+        (alive-odds-formatted [alive11 alive12 alive13]) => ["92,6" "46,9" "55,7"]
+        (alive-odds-formatted [alive14]) => ["100,0"])
+  (fact "calculates odds for none of the given ships to be alive correctly"
+        (none-alive-odds [alive08]) => 0.5
+        (none-alive-odds [alive08 alive12 alive13]) => (roughly 0.117 1E-3) 
+        (none-alive-odds [alive09 alive12]) => (roughly 0.511 1E-3) 
+        (none-alive-odds [alive10 alive11]) => (roughly 0.0006 1E-3)
+        (none-alive-odds [alive14]) => 0.0))
+
+(facts "winner odds"
+  (fact "returns corrects odds for player to be alive while no opponents are left"
+        (opponent-destroyed 0.535 0.632) => (roughly 0.293 1E-3)
+        (opponent-destroyed 0.632 0.535) => (roughly 0.197 1E-3))
+  (fact "returns win odds for defender side"
+        (win-odds-defender [alive08] [alive09]) => (roughly 0.963 1E-3)
+        (win-odds-defender [alive09 alive10] [alive11 alive12]) =>
+          (roughly 0.82 1E-3)
+        (win-odds-defender [alive13 alive12 alive08] [alive10 alive11]) =>
+          (roughly 0.005 1E-3)
+        (win-odds-defender [alive14] [alive14]) => 0.0))
 
 (facts "vector reforming helpers"
   (fact "creates hit vectors of correct size"
