@@ -302,3 +302,73 @@
    :hits [27 8 4 4 2]
    :alive 2/3
    :init 1})
+
+(def cannon-03-hit-2
+  {:state "defender",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :dice1HP 0,
+                :dice2HP 2,
+                :dice4HP 2,
+                :computer 1,
+                :shield 0,
+                :hull 3}
+   :hits [2187 392 196 420 210]
+   :alive 1218/2187
+   :init 1})
+
+(def cannon-04
+  {:state "defender",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :dice1HP 0,
+                :dice2HP 1,
+                :dice4HP 0,
+                :computer 1,
+                :shield 0,
+                :hull 1}
+   :hits [1 0 0]
+   :alive 1
+   :init 0})
+
+(def cannon-04-hit-3
+  {:state "defender",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :dice1HP 0,
+                :dice2HP 1,
+                :dice4HP 0,
+                :computer 1,
+                :shield 0,
+                :hull 1}
+   :hits [3486784401 480749476 1138880292]
+   :alive 1619629768/3486784401
+   :init 0})
+
+(def cannon-05
+  {:state "attacker",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :dice1HP 2,
+                :dice2HP 0,
+                :dice4HP 0,
+                :computer 1,
+                :shield 0,
+                :hull 1}
+   :hits [1 0 0]
+   :alive 1
+   :init 1})
+
+(def cannon-05-hit-3
+  {:state "attacker",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :dice1HP 2,
+                :dice2HP 0,
+                :dice4HP 0,
+                :computer 1,
+                :shield 0,
+                :hull 1}
+   :hits [2187 938 0]
+   :alive 938/2187
+   :init 1})

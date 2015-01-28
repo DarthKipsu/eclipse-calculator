@@ -31,6 +31,24 @@
                   :hull (part "hull") :shield (part "shield")}
      :hits (empty-hits-vector (part "hull")) :alive 1 :init i}))
 
+(defn hull-hit-combinations
+  "Takes the amount of hull as an integer and a vector containing hit combina-
+  tions and returns the number of combinations where the ship has not yet
+  received a fatal amount of hits."
+  [hull hits]
+  (let [indexes (range 1 (+ 2 hull))]
+    (apply + (map (fn [i] (get hits i)) indexes))))
+
+(defn alive-odds
+  "Takes a map presentation of a ship and returns the odds the ship is still
+  alive as a ratio."
+  [ship]
+  (let [hits (:hits ship)
+        all-combinations (get hits 0)
+        hull (component ship :hull)]
+    (if (has-no-hits? ship) 1
+      (/ (hull-hit-combinations hull hits) all-combinations))))
+
 (defn targets-for
   "Takes a string presentation of status and a list containing map presentations 
   of ships, loops through the list and returns those with unmatching states, until
@@ -142,10 +160,14 @@
 (defn cannons-round
   "Takes a map presentation of ships and adds attacks from cannons to to enemy
   hit vectors. Returns a new map presentation of ships with updated hit vectors."
-  [ships]
-  (loop [new-ships ships i 0]
-    (if (= i (count ships)) new-ships 
-      (recur (target-and-attack-missiles (ships i) new-ships) (inc i)))))
+  ([ships]
+    (loop [new-ships ships i 0]
+      (if (= i (count ships)) new-ships 
+        (recur (target-and-attack-cannons (ships i) new-ships) (inc i)))))
+  ([ships rounds]
+   (loop [new-ships ships i rounds]
+     (if (zero? i) new-ships
+       (recur (cannons-round new-ships) (dec i))))))
 
 (defn attack-with-missiles
   "Takes two map presentations of ships, the attacking ship and it's target.
@@ -192,21 +214,3 @@
       (recur (if (has-missiles? (ships i))
                (target-and-attack-missiles (ships i) new-ships)
               new-ships) (inc i)))))
-
-(defn hull-hit-combinations
-  "Takes the amount of hull as an integer and a vector containing hit combina-
-  tions and returns the number of combinations where the ship has not yet
-  received a fatal amount of hits."
-  [hull hits]
-  (let [indexes (range 1 (+ 2 hull))]
-    (apply + (map (fn [i] (get hits i)) indexes))))
-
-(defn alive-odds
-  "Takes a map presentation of a ship and returns the odds the ship is still
-  alive as a ratio."
-  [ship]
-  (let [hits (:hits ship)
-        all-combinations (get hits 0)
-        hull (component ship :hull)]
-    (if (has-no-hits? ship) 1
-      (/ (hull-hit-combinations hull hits) all-combinations))))

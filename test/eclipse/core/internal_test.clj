@@ -58,10 +58,14 @@
         (target-and-attack-cannons cannon-03 [cannon-01 cannon-03 cannon-02]) => 
           [cannon-01-hit cannon-03 cannon-02])
   (fact "plays a cannon round for all ships"
-        (cannons-round [missile-01 missile-02 missile-03]) =>
-          [missile-01-hit-2 missile-02-hit-2 missile-03]
-        (cannons-round [missile-01 missile-02-hit-2 missile-03]) =>
-          [missile-01-hit-2 missile-02-hit-4 missile-03-hit-2]))
+        (cannons-round [cannon-01 cannon-03]) =>
+          [cannon-01-hit cannon-03-hit]
+        (cannons-round [cannon-01 cannon-03 cannon-02]) =>
+          [cannon-01-hit cannon-03-hit-2 cannon-02])
+  (fact "plays three rounds of cannons for all ships"
+        (cannons-round [cannon-04 cannon-05] 3) => 
+          [cannon-04-hit-3 cannon-05-hit-3]))
+
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"
