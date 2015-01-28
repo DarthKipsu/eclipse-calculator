@@ -16,5 +16,12 @@
   ning win probabilities for both sides as well as vector containing probabilities
   for each ship to be alive after the match."
   [ships]
-  (let [ships-after-missiles (missiles-round ships)]
-    (cannons-round ships-after-missiles 3)))
+  (let [ships-missiles (missiles-round ships)
+        ships-cannons (cannons-round ships-missiles 3)
+        defenders (targets-for "attacker" ships-cannons)
+        attackers (targets-for "defender" ships-cannons)
+        def-win-odds (win-odds-defender defenders attackers)
+        att-win-odds (win-odds-attacker def-win-odds defenders)]
+    {"defender" (format "%.1f" (* 100 def-win-odds))
+     "attacker" (format "%.1f" (* 100 att-win-odds))
+     "alive-odds" (alive-odds-formatted ships-cannons)}))
