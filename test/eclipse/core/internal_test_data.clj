@@ -320,7 +320,7 @@
 (def cannon-04
   {:state "defender",
    :components {:dice1HPmissile 0,
-                :dice2HPmissile 0,
+                :dice2HPmissile 1,
                 :dice1HP 0,
                 :dice2HP 1,
                 :dice4HP 0,
@@ -334,7 +334,7 @@
 (def cannon-04-hit-3
   {:state "defender",
    :components {:dice1HPmissile 0,
-                :dice2HPmissile 0,
+                :dice2HPmissile 1,
                 :dice1HP 0,
                 :dice2HP 1,
                 :dice4HP 0,
@@ -371,4 +371,18 @@
                 :hull 1}
    :hits [2187 938 0]
    :alive 938/2187
+   :init 1})
+
+(def cannon-05-hit-3-and-missiles
+  {:state "attacker",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 0,
+                :dice1HP 2,
+                :dice2HP 0,
+                :dice4HP 0,
+                :computer 1,
+                :shield 0,
+                :hull 1}
+   :hits [14348907 5274374 0]
+   :alive 5274374/14348907
    :init 1})

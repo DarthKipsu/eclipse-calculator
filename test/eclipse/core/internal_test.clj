@@ -64,7 +64,10 @@
           [cannon-01-hit cannon-03-hit-2 cannon-02])
   (fact "plays three rounds of cannons for all ships"
         (cannons-round [cannon-04 cannon-05] 3) => 
-          [cannon-04-hit-3 cannon-05-hit-3]))
+          [cannon-04-hit-3 cannon-05-hit-3])
+  (fact "plays three rounds after a missile round"
+        (cannons-round (missiles-round [cannon-04 cannon-05]) 3) =>
+          [cannon-04-hit-3 cannon-05-hit-3-and-missiles]))
 
 
 (facts "get-hit-probabilities"
