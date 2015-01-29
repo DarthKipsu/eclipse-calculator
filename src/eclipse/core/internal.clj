@@ -37,7 +37,7 @@
   received a fatal amount of hits."
   [hull hits]
   (let [indexes (range 1 (+ 2 hull))]
-    (apply + (map (fn [i] (get hits i)) indexes))))
+    (apply + (my-map (fn [i] (get hits i)) indexes))))
 
 (defn alive-odds
   "Takes a map presentation of a ship and returns the odds the ship is still
