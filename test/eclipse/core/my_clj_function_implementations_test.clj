@@ -19,3 +19,16 @@
         (my-repeat 4 :a) => '(:a :a :a :a)
         (my-repeat 5 ":)") => '( ":)" ":)" ":)" ":)" ":)")
         (my-repeat 20 1) => '(1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1)))
+
+(facts "my map implementation"
+  (fact "apply-all helper function returns sequences where the given function
+        has been applied to all members of the given seq"
+        (apply-all inc '(1 2 3 4)) => '(2 3 4 5)
+        (apply-all first '([1] [1 2] [1 2 3])) => '(1 1 1)
+        (apply-all rest '([1] [1 2] [1 2 3])) => '(() (2) (2 3)))
+  (fact "my-map works like the clojure core map"
+        (my-map inc '()) => '()
+        (my-map inc [1 2 3]) => '(2 3 4)
+        (my-map + [1 2 3] [4 5 6]) => '(5 7 9)
+        (my-map :a [{:a 1 :b 2} {:a 3 :c 4}]) => '(1 3)
+        (my-map list [1 2 3] '(a b c) '(4 5)) => '((1 a 4) (2 b 5))))
