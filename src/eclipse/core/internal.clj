@@ -117,6 +117,27 @@
       (if (>= i hull) acc
         (recur (conj acc (combination hits i freq)) (inc i))))))
 
+(defn clipped
+  "Takes an integer and returns a smaller integer with last n digits clipped off."
+  [value n]
+  (let [multiplier (/ 1 (math/expt 10 n))]
+    (math/round (* value multiplier))))
+
+(defn clip-value
+  "Takes an integer and checks how much it needs to be rounded down to keep the
+  value in reasonable size. Returns the number of digits that need to be clipped
+  from the end of the number."
+  [value]
+  (count (str (math/round (/ value 1E10)))))
+
+(defn clipped-vec
+  "takes a vector containing integers and clips each value from the end enough
+  digits for the first value to be less than 1E11. Returns a new vector with 
+  updated values."
+  [a-vec]
+  (let [clip (clip-value (first a-vec))]
+    (mapv (fn [value] (clipped value clip)) a-vec)))
+
 (defn all-weapon-combinations
   "Takes previous hits as vector, the number of weapons and damage value for those
   weapons, as well as odds for hitting the target and returns a vector containing
@@ -125,7 +146,7 @@
   [hits weapons damage odds]
   (loop [acc hits i weapons]
     (if (zero? i)
-      acc
+      (if (< 1E10 (first acc)) (clipped-vec acc) acc)
       (recur (add-combinations acc (dice-hit-freq damage odds)) (dec i)))))
 
 (defn attack-with-cannons

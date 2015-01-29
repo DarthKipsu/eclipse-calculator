@@ -176,6 +176,18 @@
         (win-odds-attacker 0.0 [alive14]) => 0.0
         (win-odds-attacker 0.0 [alive15]) => 1.0))
         
+(facts "rounding"
+  (fact "rounds numbers down to nearest integer with n less digits in the end"
+        (clipped 123456789 4) => 12346
+        (clipped 12345678901234567890 10) => 1234567890
+        (clipped 12345678901234567890 13) => 1234568)
+  (fact "counts how many digits need to be clipped from the end"
+        (clip-value 12345678901) => 1
+        (clip-value 12345678901234567890) => 10)
+  (fact "clips the same amount from the end of each value in vector"
+        (clipped-vec [12345678901 1234567]) => [1234567890 123457]
+        (clipped-vec [123456789012 123456 1234 123 1]) => [1234567890 1235 12 1 0]
+        (clipped-vec [12345678901 0]) => [1234567890 0]))
 
 (facts "vector reforming helpers"
   (fact "creates hit vectors of correct size"
