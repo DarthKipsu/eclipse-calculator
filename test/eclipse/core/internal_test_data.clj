@@ -11,7 +11,7 @@
                 :shield 0,
                 :hull 1}
    :hits [9 5 1]
-   :alive 1})
+   :alive 2/3})
 
 (def att-int-2
   {:state "attacker",
@@ -24,7 +24,7 @@
                 :shield 0,
                 :hull 1}
    :hits [9 5 1]
-   :alive 1})
+   :alive 2/3})
 
 (def att-dre
   {:state "attacker",
@@ -63,8 +63,8 @@
                 :computer 0,
                 :shield 0,
                 :hull 0}
-   :hits [6 5]
-   :alive 5/6
+   :hits [9 8]
+   :alive 8/9
    :init 1})
 
 (def def-cru
@@ -78,7 +78,7 @@
                 :shield -2,
                 :hull 1}
    :hits [36 25 0]
-   :alive 1
+   :alive 25/36
    :init 0})
 
 (def json-01
@@ -350,8 +350,25 @@
                 :computer 1,
                 :shield 0,
                 :hull 1}
-   :hits [3486784401 480749476 1138880292]
-   :alive 1619629768/3486784401
+   :hits [16677181699666569 3636009198448900 6485865520226820]
+   :alive 10121874718675720/16677181699666569
+   :init 0})
+
+(def cannon-04-hit-3-missiles
+  {:state "defender",
+   :components {:dice1HPmissile 0,
+                :dice2HPmissile 1,
+                :dice1HP 0,
+                :dice2HP 1,
+                :dice4HP 0,
+                :computer 1,
+                :shield 0,
+                :hull 1}
+   :hits [1330279464729113309844748891857449678409
+          435335801396984840499257968107020541169
+          538548215722318355900477298510401197356]
+   :alive
+   973884017119303196399735266617421738525/1330279464729113309844748891857449678409
    :init 0})
 
 (def cannon-05
@@ -378,8 +395,8 @@
                 :computer 1,
                 :shield 0,
                 :hull 1}
-   :hits [2187 938 0]
-   :alive 938/2187
+   :hits [129140163 60299330 0]
+   :alive 60299330/129140163
    :init 1})
 
 (def cannon-05-hit-3-and-missiles
@@ -392,6 +409,6 @@
                 :computer 1,
                 :shield 0,
                 :hull 1}
-   :hits [14348907 5274374 0]
-   :alive 5274374/14348907
+   :hits [109418989131512359209 41729404567857655474 0]
+   :alive 41729404567857655474/109418989131512359209
    :init 1})

@@ -12,6 +12,6 @@
   (fact "returns a map containing win probabilities for both sides and alive odds
         for all ships in battle after missiles and 3 cannon rounds."
         (win-probabilities [cannon-04 cannon-05]) =>
-          {"defender" "59,9",
-           "attacker" "40,1",
-           "alive-odds" ["46,5" "36,8"]}))
+          {"defender" "81,6",
+           "attacker" "18,4",
+           "alive-odds" ["73,2" "38,1"]}))

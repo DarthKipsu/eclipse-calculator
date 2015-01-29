@@ -25,9 +25,9 @@
   (fact "defender interceptor does not have missiles"
         (has-missiles? def-int) => falsey)
   (fact "adds attacker missiles to defenders hits vector"
-        (:hits (attack-with-missiles att-int def-int)) => [6 5]
-        (:hits (attack-with-missiles def-cru def-int)) => [8 1]
-        (:hits (attack-with-missiles def-cru att-int)) => [243 40 28])
+        (:hits (attack-with-missiles att-int def-int)) => [9 8]
+        (:hits (attack-with-missiles def-cru def-int)) => [373248 103823]
+        (:hits (attack-with-missiles def-cru att-int)) => [11337408 2858935 1432912])
   (fact "targets and attacks correct enemies with missiles"
         (target-and-attack-missiles att-int [att-int def-int att-dre]) => 
           [att-int def-int-with-hit att-dre]
@@ -46,10 +46,11 @@
 
 (facts "cannons"
   (fact "adds attacker cannons to defenders hits vector"
-        (:hits (attack-with-cannons att-int def-int)) => [6 5]
-        (:hits (attack-with-cannons def-cru def-int)) => [8 1]
-        (:hits (attack-with-cannons def-cru att-int)) => [243 40 28]
-        (:hits (attack-with-cannons def-cru att-dre)) => [216 125 25 25 5 25 5])
+        (:hits (attack-with-cannons att-int def-int)) => [9 8]
+        (:hits (attack-with-cannons def-cru def-int)) => [373248 103823]
+        (:hits (attack-with-cannons def-cru att-int)) => [11337408 2858935 1432912]
+        (:hits (attack-with-cannons def-cru att-dre)) =>
+          [10077696 6967871 912025 912025 119375 912025 119375])
   (fact "targets and attacks correct enemies with missiles"
         (target-and-attack-cannons att-int-2 [att-int-2 def-int att-dre]) => 
           [att-int-2 def-int-with-hit att-dre]
@@ -67,11 +68,11 @@
           [cannon-04-hit-3 cannon-05-hit-3])
   (fact "plays three rounds after a missile round"
         (cannons-round (missiles-round [cannon-04 cannon-05]) 3) =>
-          [cannon-04-hit-3 cannon-05-hit-3-and-missiles]))
+          [cannon-04-hit-3-missiles cannon-05-hit-3-and-missiles]))
 
 (facts "get-hit-probabilities"
   (fact "1/6 odds when no modifiers"
-        (hit-once-odds att-int def-int) => 1/6)
+        (hit-once-odds att-int def-int) => 1/9)
   (fact "only 5/6 odds even with insane computer bonus"
         (hit-once-odds att-dre def-int) => 5/6)
   (fact "1/6 odds even against insane shield bonuses"
