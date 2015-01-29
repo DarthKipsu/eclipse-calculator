@@ -1,15 +1,16 @@
 (ns eclipse.core.internal
-  (:require [clojure.math.numeric-tower :as math]))
+  (:require [clojure.math.numeric-tower :as math/expt]
+            [eclipse.core.my-clj-function-implementations :refer :all]))
 
 (defn- is-opponent-for? [state, target]
   (not= state (:state target)))
 
 (defn- component [ship component]
-  (get-in ship [:components component]))
+  (my-get-in ship [:components component]))
 
 (defn- has-no-hits? [ship]
   (let [hits (:hits ship)]
-    (= 1 (get hits 0))))
+    (= 1 (hits 0))))
 
 (defn empty-hits-vector 
   "takes a hull count and returns an empty hits vector with enough slots for 
