@@ -37,14 +37,14 @@
   received a fatal amount of hits."
   [hull hits]
   (let [indexes (range 1 (+ 2 hull))]
-    (apply + (my-map (fn [i] (get hits i)) indexes))))
+    (apply + (my-map (fn [i] (hits i)) indexes))))
 
 (defn alive-odds
   "Takes a map presentation of a ship and returns the odds the ship is still
   alive as a ratio."
   [ship]
   (let [hits (:hits ship)
-        all-combinations (get hits 0)
+        all-combinations (hits 0)
         hull (component ship :hull)]
     (if (has-no-hits? ship) 1
       (/ (hull-hit-combinations hull hits) all-combinations))))
@@ -105,8 +105,8 @@
   (let [damage (some #(if (< 0 %) %) (keys freq))]
     (if (<= i damage) (if (= 0 (get hits i)) (if (= 1 i) (freq 0) 0)
                         (* (get hits i) (freq 0)))
-      (if (= 0 (get hits 1)) (if (= (inc damage) i) (freq damage) 0)
-        (+ (* (freq damage) (get hits (- i damage))) (* (get hits i) (freq 0)))))))
+      (if (= 0 (hits 1)) (if (= (inc damage) i) (freq damage) 0)
+        (+ (* (freq damage) (get hits (- i damage))) (* (hits i) (freq 0)))))))
 
 (defn add-combinations
   "Takes previous hits as a vector and a map containing hit frequencies for a 
@@ -114,7 +114,7 @@
   [hits freq]
   (let [damage (some #(if (< 0 %) %) (keys freq))
         hull (count hits)]
-    (loop [acc [(* (apply + (vals freq)) (get hits 0))] i 1]
+    (loop [acc [(* (apply + (vals freq)) (hits 0))] i 1]
       (if (>= i hull) acc
         (recur (conj acc (combination hits i freq)) (inc i))))))
 

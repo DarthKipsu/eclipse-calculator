@@ -41,6 +41,7 @@
   (fact "my-first returns the first element in a seq."
         (my-first [1 2 3 4]) => 1
         (my-first '(1 2 3)) => 1)
-  (fact "my-rest returns a seq without the first element."
-        (my-rest [1 2 3 4]) => '(2 3 4)
-        (my-rest '(1 2 3)) => '(2 3)))
+  (fact "my-rest returns a vector without the first element."
+        (my-rest [1 2 3 4]) => [2 3 4]
+        (my-rest '(1 2 3)) => [2 3]
+        (vector? (my-rest [1 2]))))

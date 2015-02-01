@@ -30,14 +30,14 @@
     (a-vec 0)))
 
 (defn my-rest
-  "takes a sequence and returns a new sequence with all but the first element of
+  "takes a sequence and returns a new vector with all but the first element of
   the given sequence"
   [a-seq]
   (let [a-vec (to-vector a-seq)]
-    (loop [acc '() n (- (count a-seq) 1)]
-      (if (== n 0)
+    (loop [acc [] n 1]
+      (if (== n (count a-seq))
         acc
-        (recur (conj acc (a-vec n)) (- n 1))))))
+        (recur (conj acc (a-vec n)) (+ n 1))))))
 
 (defn apply-all 
   "a helper function for my-map that takes a function and a sequence, goes through
