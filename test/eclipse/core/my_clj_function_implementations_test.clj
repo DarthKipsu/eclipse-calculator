@@ -32,3 +32,13 @@
         (my-map + [1 2 3] [4 5 6]) => '(5 7 9)
         (my-map :a [{:a 1 :b 2} {:a 3 :c 4}]) => '(1 3)
         (my-map list [1 2 3] '(a b c) '(4 5)) => '((1 a 4) (2 b 5))))
+
+(facts "my first and rest implementations"
+  (fact "to-vector returns a seq as a vector"
+        (vector? (to-vector '(1))))
+  (fact "my-first returns the first element in a seq."
+        (my-first [1 2 3 4]) => 1
+        (my-first '(1 2 3)) => 1)
+  (fact "my-rest returns a seq without the first element."
+        (my-rest [1 2 3 4]) => '(2 3 4)
+        (my-rest '(1 2 3)) => '(2 3)))

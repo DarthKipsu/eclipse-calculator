@@ -136,7 +136,7 @@
   digits for the first value to be less than 1E11. Returns a new vector with 
   updated values."
   [a-vec]
-  (let [clip (clip-value (first a-vec))]
+  (let [clip (clip-value (my-first a-vec))]
     (mapv (fn [value] (clipped value clip)) a-vec)))
 
 (defn all-weapon-combinations
@@ -147,7 +147,7 @@
   [hits weapons damage odds]
   (loop [acc hits i weapons]
     (if (zero? i)
-      (if (< 1E10 (first acc)) (clipped-vec acc) acc)
+      (if (< 1E10 (my-first acc)) (clipped-vec acc) acc)
       (recur (add-combinations acc (dice-hit-freq damage odds)) (dec i)))))
 
 (defn attack-with-cannons

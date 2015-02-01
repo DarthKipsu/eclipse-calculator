@@ -18,6 +18,27 @@
      a-seq
      (recur (- n 1) value (conj a-seq value)))))
 
+(defn to-vector
+  "takes a sequence and returns a vector containing all the elements in the seq."
+  [a-seq]
+  (if (vector? a-seq) a-seq (into [] a-seq)))
+
+(defn my-first
+  "takes a sequence and returns the first element in it."
+  [a-seq]
+  (let [a-vec (to-vector a-seq)]
+    (a-vec 0)))
+
+(defn my-rest
+  "takes a sequence and returns a new sequence with all but the first element of
+  the given sequence"
+  [a-seq]
+  (let [a-vec (to-vector a-seq)]
+    (loop [acc '() n (- (count a-seq) 1)]
+      (if (== n 0)
+        acc
+        (recur (conj acc (a-vec n)) (- n 1))))))
+
 (defn apply-all 
   "a helper function for my-map that takes a function and a sequence, goes through
   the sequence and applies the function to each value and then returns the results
@@ -26,7 +47,7 @@
   ([func a-seq acc]
    (if (empty? a-seq)
      (reverse acc)
-     (recur func (rest a-seq) (cons (func (first a-seq)) acc)))))
+     (recur func (my-rest a-seq) (cons (func (my-first a-seq)) acc)))))
 
 (defn my-map
   "takes a function and one or more sequences and returns a sequence containing
@@ -36,6 +57,6 @@
   ([func a-seq & more]
    (if (or (empty? a-seq) (some empty? more))
      '()
-     (cons (apply func (first a-seq) (apply-all first more))
-           (apply my-map func (rest a-seq) (apply-all rest more))))))
+     (cons (apply func (my-first a-seq) (apply-all my-first more))
+           (apply my-map func (my-rest a-seq) (apply-all my-rest more))))))
 
