@@ -136,8 +136,8 @@
   digits for the first value to be less than 1E11. Returns a new vector with 
   updated values."
   [a-vec]
-  (let [clip (clip-value (my-first a-vec))]
-    (mapv (fn [value] (clipped value clip)) a-vec)))
+  (let [n (clip-value (my-first a-vec))]
+    (mapv (fn [value] (clipped value n)) a-vec)))
 
 (defn all-weapon-combinations
   "Takes previous hits as vector, the number of weapons and damage value for those
@@ -240,7 +240,7 @@
   "Takes a vector containing map presentations of ships and returns another 
   vector containing formatted alive odds for each ship."
   [ships]
-  (mapv (fn [ship] (format "%.1f" (* 100 (double (:alive ship))))) ships))
+  (my-map (fn [ship] (format "%.1f" (* 100 (double (:alive ship))))) ships))
 
 (defn none-alive-odds
   "Takes a vector containing map presentations of ships and returns the odds for 
