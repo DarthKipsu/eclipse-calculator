@@ -45,3 +45,13 @@
         (my-rest [1 2 3 4]) => [2 3 4]
         (my-rest '(1 2 3)) => [2 3]
         (vector? (my-rest [1 2]))))
+
+(facts "my range implementation"
+  (fact "my-range returns a range starting from 0"
+        (my-range 0) => '()
+        (my-range 4) => '(0 1 2 3)
+        (my-range 9) => '(0 1 2 3 4 5 6 7 8))
+  (fact "my-range returns a range between given values"
+        (my-range -1 1) => '(-1 0)
+        (my-range 1 6) => '(1 2 3 4 5)
+        (my-range -5 4) => '(-5 -4 -3 -2 -1 0 1 2 3)))

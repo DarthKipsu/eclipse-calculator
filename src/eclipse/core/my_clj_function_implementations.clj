@@ -60,3 +60,12 @@
      (apply vector (apply func (my-first a-seq) (apply-all my-first more))
             (apply my-map func (my-rest a-seq) (apply-all my-rest more))))))
 
+(defn my-range
+  "returns a seq containing numbers starting from 0 until the number (exclusive)
+  given, or starting from the first parameter (inclusive) and ending before the
+  second one."
+  ([end] (my-range 0 end))
+  ([start end]
+   (loop [acc '() n (- end 1)]
+     (if (== n (- start 1)) acc
+       (recur (conj acc n) (- n 1))))))
