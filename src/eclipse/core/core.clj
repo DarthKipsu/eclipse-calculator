@@ -1,5 +1,7 @@
 (ns eclipse.core.core
-  (:use eclipse.core.internal))
+  (:use eclipse.core.internal.attacks
+        eclipse.core.internal.odds
+        eclipse.core.internal.reforms))
 
 (defn- mapv-indexed [f v]
   (into [] (map-indexed f v)))

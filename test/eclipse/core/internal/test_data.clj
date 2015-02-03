@@ -1,4 +1,4 @@
-(ns eclipse.core.internal-test-data)
+(ns eclipse.core.internal.test-data)
 
 (def att-int
   {:state "attacker",

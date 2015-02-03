@@ -1,7 +1,7 @@
 (ns eclipse.core.core-test
   (:require [clojure.test :refer :all]
             [eclipse.core.core :refer :all]
-            [eclipse.core.internal-test-data :refer :all])
+            [eclipse.core.internal.test-data :refer :all])
   (:use midje.sweet))
 
 (facts "vector reforming"

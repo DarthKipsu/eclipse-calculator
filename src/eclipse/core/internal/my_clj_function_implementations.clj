@@ -1,4 +1,4 @@
-(ns eclipse.core.my-clj-function-implementations)
+(ns eclipse.core.internal.my-clj-function-implementations)
 
 (defn my-get-in
   "takes a map and a vector containing a path inside that map as a parameter and
@@ -49,13 +49,20 @@
      (reverse acc)
      (recur func (my-rest a-seq) (cons (func (my-first a-seq)) acc)))))
 
+(defn my-some
+  "takes a predicate function and a sequence and returns true when first of the
+  sequences values meets the predicate and nil if none will."
+  [func a-seq]
+  (if (empty? a-seq) nil
+    (or (func (my-first a-seq)) (recur func (my-rest a-seq)))))
+
 (defn my-map
-  "takes a function and one or more sequences and returns a sequence containing
+  "takes a function and one or more sequences and returns a vector containing
   the results of applying the function to the first set of parameters, then the 
   second and so on until reaching the end of one or more of the sequences."
   ([func a-seq] (apply-all func a-seq))
   ([func a-seq & more]
-   (if (or (empty? a-seq) (some empty? more))
+   (if (or (empty? a-seq) (my-some empty? more))
      []
      (apply vector (apply func (my-first a-seq) (apply-all my-first more))
             (apply my-map func (my-rest a-seq) (apply-all my-rest more))))))
@@ -69,10 +76,3 @@
    (loop [acc '() n (- end 1)]
      (if (== n (- start 1)) acc
        (recur (conj acc n) (- n 1))))))
-
-(defn my-some
-  "takes a predicate function and a sequence and returns true when first of the
-  sequences values meets the predicate and nil if none will."
-  [func a-seq]
-  (if (empty? a-seq) nil
-    (or (func (my-first a-seq)) (recur func (my-rest a-seq)))))

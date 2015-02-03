@@ -1,6 +1,6 @@
-(ns eclipse.core.my-clj-function-implementations-test
+(ns eclipse.core.internal.my-clj-function-implementations-test
   (:require [clojure.test :refer :all]
-            [eclipse.core.my-clj-function-implementations :refer :all])
+            [eclipse.core.internal.my-clj-function-implementations :refer :all])
   (:use midje.sweet))
 
 (facts "my get-in implementation"
