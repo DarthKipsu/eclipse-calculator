@@ -55,3 +55,14 @@
         (my-range -1 1) => '(-1 0)
         (my-range 1 6) => '(1 2 3 4 5)
         (my-range -5 4) => '(-5 -4 -3 -2 -1 0 1 2 3)))
+
+(facts "my some implementation"
+  (fact "my-some returns true if one of the values given evaluates to true"
+        (my-some even? '(1 2 3))
+        (my-some odd? '(1 2 3))
+        (my-some odd? [2 3 4])
+        (my-some (fn [x] (< 5 x)) '(4 5 6)))
+  (fact "my-some returns nil when none of the values given evaluates to true"
+        (my-some even? '(1 3 5)) => nil
+        (my-some odd? [2 4 6]) => nil
+        (my-some (fn [x] (== 7 x)) '(2 4 6 8)) => nil))

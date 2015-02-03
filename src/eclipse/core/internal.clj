@@ -36,7 +36,7 @@
   tions and returns the number of combinations where the ship has not yet
   received a fatal amount of hits."
   [hull hits]
-  (let [indexes (range 1 (+ 2 hull))]
+  (let [indexes (my-range 1 (+ 2 hull))]
     (apply + (my-map (fn [i] (hits i)) indexes))))
 
 (defn alive-odds
@@ -78,7 +78,7 @@
   and returns the number of k-elements subsets of n-elements set, in other words
   their binomial coefficient."
   [n k]
-  (let [factorial (fn [x] (apply * (range 1 (inc x))))]
+  (let [factorial (fn [x] (apply * (my-range 1 (inc x))))]
     (/ (factorial n) (* (factorial k) (factorial (- n k))))))
 
 (defn bin-dist
@@ -102,7 +102,7 @@
   containing frequencies for hit and miss and returns the updated combination
   value for the received index."
   [hits i freq]
-  (let [damage (some #(if (< 0 %) %) (keys freq))]
+  (let [damage (my-some #(if (< 0 %) %) (keys freq))]
     (if (<= i damage) (if (= 0 (get hits i)) (if (= 1 i) (freq 0) 0)
                         (* (get hits i) (freq 0)))
       (if (= 0 (hits 1)) (if (= (inc damage) i) (freq damage) 0)
@@ -112,7 +112,7 @@
   "Takes previous hits as a vector and a map containing hit frequencies for a 
   single weapon hit. Returns a new hits vector containing updated hit combinations."
   [hits freq]
-  (let [damage (some #(if (< 0 %) %) (keys freq))
+  (let [damage (my-some #(if (< 0 %) %) (keys freq))
         hull (count hits)]
     (loop [acc [(* (apply + (vals freq)) (hits 0))] i 1]
       (if (>= i hull) acc

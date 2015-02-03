@@ -69,3 +69,10 @@
    (loop [acc '() n (- end 1)]
      (if (== n (- start 1)) acc
        (recur (conj acc n) (- n 1))))))
+
+(defn my-some
+  "takes a predicate function and a sequence and returns true when first of the
+  sequences values meets the predicate and nil if none will."
+  [func a-seq]
+  (if (empty? a-seq) nil
+    (or (func (my-first a-seq)) (recur func (my-rest a-seq)))))
