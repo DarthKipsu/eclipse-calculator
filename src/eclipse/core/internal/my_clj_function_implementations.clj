@@ -43,12 +43,9 @@
   "a helper function for my-map that takes a function and a sequence, goes through
   the sequence and applies the function to each value and then returns the results
   of the function in a sequence."
-  ([func a-seq] (apply-all func a-seq []))
-  ([func a-seq acc]
-   (if (empty? a-seq)
-     (reverse acc)
-     (recur func (my-rest a-seq) (cons (func (my-first a-seq)) acc)))))
-
+  [func a-seq]
+  (persistent! (reduce (fn [acc n] (conj! acc (func n))) (transient []) a-seq)))
+  
 (defn my-some
   "takes a predicate function and a sequence and returns true when first of the
   sequences values meets the predicate and nil if none will."
