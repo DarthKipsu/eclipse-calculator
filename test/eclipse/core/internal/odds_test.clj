@@ -78,10 +78,13 @@
         (alive-odds alive06) => 212/216
         (alive-odds alive07) => 660/1296)
   (fact "formatted alive percentages are returned for a group of ships"
-        (alive-odds-formatted [missile-03 cannon-03-hit]) => ["100,0" "66,7"]
-        (alive-odds-formatted [alive08 alive09 alive10]) => ["50,0" "3,7" "99,1"]
-        (alive-odds-formatted [alive11 alive12 alive13]) => ["92,6" "46,9" "55,7"]
-        (alive-odds-formatted [alive14]) => ["100,0"])
+        (alive-odds-formatted [missile-03 cannon-03-hit]) =>
+          [(format "%.1f" 100.0) (format "%.1f" 66.7)]
+        (alive-odds-formatted [alive08 alive09 alive10]) =>
+          [(format "%.1f" 50.0) (format "%.1f" 3.7) (format "%.1f" 99.1)]
+        (alive-odds-formatted [alive11 alive12 alive13]) =>
+          [(format "%.1f" 92.6) (format "%.1f" 46.9) (format "%.1f" 55.7)]
+        (alive-odds-formatted [alive14]) => [(format "%.1f" 100.0)])
   (fact "calculates odds for none of the given ships to be alive correctly"
         (none-alive-odds [alive08]) => 0.5
         (none-alive-odds [alive08 alive12 alive13]) => (roughly 0.117 1E-3) 
