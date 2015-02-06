@@ -16,7 +16,7 @@
   received a fatal amount of hits."
   [hull hits]
   (let [indexes (my-range 1 (+ 2 hull))]
-    (apply + (my-map (fn [i] (hits i)) indexes))))
+    (apply + (my-map hits indexes))))
 
 (defn alive-odds
   "Takes a map presentation of a ship and returns the odds the ship is still
@@ -69,17 +69,17 @@
   containing frequencies for hit and miss and returns the updated combination
   value for the received index."
   [hits i freq]
-  (let [damage (my-some #(if (< 0 %) %) (keys freq))]
-    (if (<= i damage) (if (= 0 (get hits i)) (if (= 1 i) (freq 0) 0)
+  (let [damage (my-some #(if (pos? %) %) (keys freq))]
+    (if (<= i damage) (if (zero? (get hits i)) (if (= 1 i) (freq 0) 0)
                         (* (get hits i) (freq 0)))
-      (if (= 0 (hits 1)) (if (= (inc damage) i) (freq damage) 0)
+      (if (zero? (hits 1)) (if (= (inc damage) i) (freq damage) 0)
         (+ (* (freq damage) (get hits (- i damage))) (* (hits i) (freq 0)))))))
 
 (defn add-combinations
   "Takes previous hits as a vector and a map containing hit frequencies for a 
   single weapon hit. Returns a new hits vector containing updated hit combinations."
   [hits freq]
-  (let [damage (my-some #(if (< 0 %) %) (keys freq))
+  (let [damage (my-some #(if (pos? %) %) (keys freq))
         hull (count hits)]
     (loop [acc [(* (apply + (vals freq)) (hits 0))] i 1]
       (if (>= i hull) acc
@@ -145,7 +145,7 @@
         a-none-alive (none-alive-odds a-ships)
         a-destroyed (opponent-destroyed d-none-alive a-none-alive)
         d-destroyed (opponent-destroyed a-none-alive d-none-alive)]
-    (if (== 0 a-none-alive)
+    (if (zero? a-none-alive)
       0.0 
       (/ a-destroyed (+ a-destroyed d-destroyed)))))
 
@@ -153,6 +153,6 @@
   "Takes the odds for the defender to win and a vector containing defender ships
   as a parameter and returns the odds the attacker will win ass a double."
   [d-win-odds d-ships]
-  (if (and (== 0 d-win-odds) (== 0 (none-alive-odds d-ships)))
+  (if (and (zero? d-win-odds) (zero? (none-alive-odds d-ships)))
     0.0
     (- 1 d-win-odds)))

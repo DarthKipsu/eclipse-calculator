@@ -90,8 +90,8 @@
   weaponry installed. Returns true if it has."
   [ship]
   (or
-    (< 0 (component ship :dice1HPmissile))
-    (< 0 (component ship :dice2HPmissile))))
+    (pos? (component ship :dice1HPmissile))
+    (pos? (component ship :dice2HPmissile))))
 
 (defn missiles-round
   "Takes a map presentation of ships, checks each ship for missiles and if they

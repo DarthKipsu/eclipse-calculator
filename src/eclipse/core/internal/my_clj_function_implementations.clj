@@ -7,7 +7,7 @@
   (loop [acc a-map i 0]
     (if (= i (count key-seq))
       acc
-      (recur ((key-seq i) acc) (+ i 1)))))
+      (recur ((key-seq i) acc) (inc i)))))
 
 (defn my-repeat
   "takes a value of any type and a multiplier and returns a lazy sequence with
@@ -16,12 +16,12 @@
   ([n value a-seq]
    (if (zero? n)
      a-seq
-     (recur (- n 1) value (conj a-seq value)))))
+     (recur (dec n) value (conj a-seq value)))))
 
 (defn to-vector
   "takes a sequence and returns a vector containing all the elements in the seq."
   [a-seq]
-  (if (vector? a-seq) a-seq (into [] a-seq)))
+  (if (vector? a-seq) a-seq (vec a-seq)))
 
 (defn my-first
   "takes a sequence and returns the first element in it."
@@ -37,7 +37,7 @@
     (loop [acc [] n 1]
       (if (== n (count a-seq))
         acc
-        (recur (conj acc (a-vec n)) (+ n 1))))))
+        (recur (conj acc (a-vec n)) (inc n))))))
 
 (defn apply-all 
   "a helper function for my-map that takes a function and a sequence, goes through
@@ -69,6 +69,6 @@
   second one."
   ([end] (my-range 0 end))
   ([start end]
-   (loop [acc '() n (- end 1)]
-     (if (== n (- start 1)) acc
-       (recur (conj acc n) (- n 1))))))
+   (loop [acc '() n (dec end)]
+     (if (== n (dec start)) acc
+       (recur (conj acc n) (dec n))))))

@@ -4,7 +4,7 @@
         eclipse.core.internal.reforms))
 
 (defn- mapv-indexed [f v]
-  (into [] (map-indexed f v)))
+  (vec (map-indexed f v)))
 
 (defn reform-ships
   "Takes a vector containing ships involved in the battle, reforms them to be

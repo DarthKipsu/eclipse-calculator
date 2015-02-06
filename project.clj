@@ -5,7 +5,8 @@
                  [org.clojure/math.numeric-tower "0.0.4"]
                  [compojure "1.3.1"]
                  [ring/ring-defaults "0.1.2"]]
-  :plugins [[lein-ring "0.8.13"]]
+  :plugins [[lein-ring "0.8.13"]
+            [lein-kibit "0.0.8"]]
   :ring {:handler eclipse.core.handler/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
