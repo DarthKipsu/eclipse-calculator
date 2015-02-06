@@ -13,6 +13,6 @@
   :ring {:handler eclipse.core.handler/app}
   :profiles
   {:dev {:dependencies [[javax.servlet/servlet-api "2.5"]
-                        [midje "1.6.3"]
+                        [midje "1.6.3" :exclusions [org.clojure/clojure]]
                         [ring-mock "0.1.5"]]
          :plugins [[lein-midje "3.1.3"]]}})
