@@ -1,0 +1,229 @@
+<html>
+ <head>
+  <link rel="stylesheet" href="../../../coverage.css"/>  <title> eclipse/core/internal/my_clj_function_implementations.clj </title>
+ </head>
+ <body>
+<span class="partial" title="29 out of 30 forms covered">
+                 001&nbsp;&nbsp;(ns&nbsp;eclipse.core.internal.my-clj-function-implementations)
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 002&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 003&nbsp;&nbsp;(defn&nbsp;my-get-in
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 004&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;map&nbsp;and&nbsp;a&nbsp;vector&nbsp;containing&nbsp;a&nbsp;path&nbsp;inside&nbsp;that&nbsp;map&nbsp;as&nbsp;a&nbsp;parameter&nbsp;and
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 005&nbsp;&nbsp;&nbsp;&nbsp;returns&nbsp;the&nbsp;value&nbsp;nested&nbsp;inside&nbsp;the&nbsp;sequence&nbsp;of&nbsp;keys&nbsp;in&nbsp;the&nbsp;given&nbsp;vector."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 006&nbsp;&nbsp;&nbsp;&nbsp;[a-map&nbsp;key-seq]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 007&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[acc&nbsp;a-map&nbsp;i&nbsp;0]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 008&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(=&nbsp;i&nbsp;(count&nbsp;key-seq))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 009&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 010&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;((key-seq&nbsp;i)&nbsp;acc)&nbsp;(inc&nbsp;i)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 011&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 012&nbsp;&nbsp;(defn&nbsp;my-repeat
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 013&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;value&nbsp;of&nbsp;any&nbsp;type&nbsp;and&nbsp;a&nbsp;multiplier&nbsp;and&nbsp;returns&nbsp;a&nbsp;lazy&nbsp;sequence&nbsp;with
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 014&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;value&nbsp;repeated&nbsp;by&nbsp;the&nbsp;multiplier."
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 015&nbsp;&nbsp;&nbsp;&nbsp;([n&nbsp;value]&nbsp;(my-repeat&nbsp;n&nbsp;value&nbsp;'()))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 016&nbsp;&nbsp;&nbsp;&nbsp;([n&nbsp;value&nbsp;a-seq]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(zero?&nbsp;n)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a-seq
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(dec&nbsp;n)&nbsp;value&nbsp;(conj&nbsp;a-seq&nbsp;value)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 020&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 021&nbsp;&nbsp;(defn&nbsp;to-vector
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 022&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;sequence&nbsp;and&nbsp;returns&nbsp;a&nbsp;vector&nbsp;containing&nbsp;all&nbsp;the&nbsp;elements&nbsp;in&nbsp;the&nbsp;seq."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 023&nbsp;&nbsp;&nbsp;&nbsp;[a-seq]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 024&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(vector?&nbsp;a-seq)&nbsp;a-seq&nbsp;(vec&nbsp;a-seq)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 025&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 026&nbsp;&nbsp;(defn&nbsp;my-first
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 027&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;sequence&nbsp;and&nbsp;returns&nbsp;the&nbsp;first&nbsp;element&nbsp;in&nbsp;it."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 028&nbsp;&nbsp;&nbsp;&nbsp;[a-seq]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 029&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[a-vec&nbsp;(to-vector&nbsp;a-seq)]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(a-vec&nbsp;0)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 031&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 032&nbsp;&nbsp;(defn&nbsp;my-rest
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 033&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;sequence&nbsp;and&nbsp;returns&nbsp;a&nbsp;new&nbsp;vector&nbsp;with&nbsp;all&nbsp;but&nbsp;the&nbsp;first&nbsp;element&nbsp;of
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 034&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;given&nbsp;sequence"
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 035&nbsp;&nbsp;&nbsp;&nbsp;[a-seq]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 036&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[a-vec&nbsp;(to-vector&nbsp;a-seq)]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 037&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[acc&nbsp;[]&nbsp;n&nbsp;1]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 038&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(==&nbsp;n&nbsp;(count&nbsp;a-seq))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;acc
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(conj&nbsp;acc&nbsp;(a-vec&nbsp;n))&nbsp;(inc&nbsp;n))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 041&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 042&nbsp;&nbsp;(defn&nbsp;apply-all&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 043&nbsp;&nbsp;&nbsp;&nbsp;"a&nbsp;helper&nbsp;function&nbsp;for&nbsp;my-map&nbsp;that&nbsp;takes&nbsp;a&nbsp;function&nbsp;and&nbsp;a&nbsp;sequence,&nbsp;goes&nbsp;through
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 044&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;sequence&nbsp;and&nbsp;applies&nbsp;the&nbsp;function&nbsp;to&nbsp;each&nbsp;value&nbsp;and&nbsp;then&nbsp;returns&nbsp;the&nbsp;results
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 045&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;the&nbsp;function&nbsp;in&nbsp;a&nbsp;sequence."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 046&nbsp;&nbsp;&nbsp;&nbsp;[func&nbsp;a-seq]
+                </span><br/>
+<span class="covered" title="15 out of 15 forms covered">
+                 047&nbsp;&nbsp;&nbsp;&nbsp;(persistent!&nbsp;(reduce&nbsp;(fn&nbsp;[acc&nbsp;n]&nbsp;(conj!&nbsp;acc&nbsp;(func&nbsp;n)))&nbsp;(transient&nbsp;[])&nbsp;a-seq)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 048&nbsp;&nbsp;&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 049&nbsp;&nbsp;(defn&nbsp;my-some
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 050&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;predicate&nbsp;function&nbsp;and&nbsp;a&nbsp;sequence&nbsp;and&nbsp;returns&nbsp;true&nbsp;when&nbsp;first&nbsp;of&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 051&nbsp;&nbsp;&nbsp;&nbsp;sequences&nbsp;values&nbsp;meets&nbsp;the&nbsp;predicate&nbsp;and&nbsp;nil&nbsp;if&nbsp;none&nbsp;will."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 052&nbsp;&nbsp;&nbsp;&nbsp;[func&nbsp;[seq-first&nbsp;&&nbsp;seq-rest]]
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                 053&nbsp;&nbsp;&nbsp;&nbsp;(when&nbsp;seq-first&nbsp;(or&nbsp;(func&nbsp;seq-first)&nbsp;(recur&nbsp;func&nbsp;seq-rest))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 054&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 055&nbsp;&nbsp;(defn&nbsp;my-map
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 056&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;function&nbsp;and&nbsp;one&nbsp;or&nbsp;more&nbsp;sequences&nbsp;and&nbsp;returns&nbsp;a&nbsp;vector&nbsp;containing
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 057&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;results&nbsp;of&nbsp;applying&nbsp;the&nbsp;function&nbsp;to&nbsp;the&nbsp;first&nbsp;set&nbsp;of&nbsp;parameters,&nbsp;then&nbsp;the&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 058&nbsp;&nbsp;&nbsp;&nbsp;second&nbsp;and&nbsp;so&nbsp;on&nbsp;until&nbsp;reaching&nbsp;the&nbsp;end&nbsp;of&nbsp;one&nbsp;or&nbsp;more&nbsp;of&nbsp;the&nbsp;sequences."
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 059&nbsp;&nbsp;&nbsp;&nbsp;([func&nbsp;a-seq]&nbsp;(apply-all&nbsp;func&nbsp;a-seq))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 060&nbsp;&nbsp;&nbsp;&nbsp;([func&nbsp;a-seq&nbsp;&&nbsp;more]
+                </span><br/>
+<span class="covered" title="13 out of 13 forms covered">
+                 061&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(or&nbsp;(empty?&nbsp;a-seq)&nbsp;(my-some&nbsp;empty?&nbsp;more))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 062&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[]
+                </span><br/>
+<span class="covered" title="13 out of 13 forms covered">
+                 063&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;vector&nbsp;(apply&nbsp;func&nbsp;(my-first&nbsp;a-seq)&nbsp;(apply-all&nbsp;my-first&nbsp;more))
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                 064&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;my-map&nbsp;func&nbsp;(my-rest&nbsp;a-seq)&nbsp;(apply-all&nbsp;my-rest&nbsp;more))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 065&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 066&nbsp;&nbsp;(defn&nbsp;my-range
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 067&nbsp;&nbsp;&nbsp;&nbsp;"returns&nbsp;a&nbsp;seq&nbsp;containing&nbsp;numbers&nbsp;starting&nbsp;from&nbsp;0&nbsp;until&nbsp;the&nbsp;number&nbsp;(exclusive)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 068&nbsp;&nbsp;&nbsp;&nbsp;given,&nbsp;or&nbsp;starting&nbsp;from&nbsp;the&nbsp;first&nbsp;parameter&nbsp;(inclusive)&nbsp;and&nbsp;ending&nbsp;before&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 069&nbsp;&nbsp;&nbsp;&nbsp;second&nbsp;one."
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 070&nbsp;&nbsp;&nbsp;&nbsp;([end]&nbsp;(my-range&nbsp;0&nbsp;end))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 071&nbsp;&nbsp;&nbsp;&nbsp;([start&nbsp;end]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[acc&nbsp;'()&nbsp;n&nbsp;(dec&nbsp;end)]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(==&nbsp;n&nbsp;(dec&nbsp;start))&nbsp;acc
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(conj&nbsp;acc&nbsp;n)&nbsp;(dec&nbsp;n))))))
+                </span><br/>
+ </body>
+</html>

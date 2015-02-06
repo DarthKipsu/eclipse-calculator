@@ -1,0 +1,7 @@
+Lines Non-Blank Instrumented Covered Partial
+   74        66      33         32          1 eclipse/core/internal/my_clj_function_implementations.clj
+   21        19      12         11          1 eclipse/core/internal/reforms.clj
+   11         9       6          5          1 eclipse/core/handler.clj
+  158       139      71         70          1 eclipse/core/internal/odds.clj
+  105        96      56         55          1 eclipse/core/internal/attacks.clj
+   29        26      15         14          1 eclipse/core/core.clj

@@ -1,0 +1,481 @@
+<html>
+ <head>
+  <link rel="stylesheet" href="../../../coverage.css"/>  <title> eclipse/core/internal/odds.clj </title>
+ </head>
+ <body>
+<span class="partial" title="36 out of 37 forms covered">
+                 001&nbsp;&nbsp;(ns&nbsp;eclipse.core.internal.odds
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 002&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;math]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[eclipse.core.internal.my-clj-function-implementations&nbsp;:refer&nbsp;:all])
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 004&nbsp;&nbsp;&nbsp;&nbsp;(:use&nbsp;[eclipse.core.internal.reforms]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 005&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 006&nbsp;&nbsp;(defn&nbsp;component&nbsp;[ship&nbsp;component]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 007&nbsp;&nbsp;&nbsp;&nbsp;(my-get-in&nbsp;ship&nbsp;[:components&nbsp;component]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 008&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                 009&nbsp;&nbsp;(defn-&nbsp;has-no-hits?&nbsp;[ship]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 010&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[hits&nbsp;(:hits&nbsp;ship)]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 011&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(=&nbsp;1&nbsp;(hits&nbsp;0))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 012&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 013&nbsp;&nbsp;(defn&nbsp;hull-hit-combinations
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 014&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;the&nbsp;amount&nbsp;of&nbsp;hull&nbsp;as&nbsp;an&nbsp;integer&nbsp;and&nbsp;a&nbsp;vector&nbsp;containing&nbsp;hit&nbsp;combina-
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 015&nbsp;&nbsp;&nbsp;&nbsp;tions&nbsp;and&nbsp;returns&nbsp;the&nbsp;number&nbsp;of&nbsp;combinations&nbsp;where&nbsp;the&nbsp;ship&nbsp;has&nbsp;not&nbsp;yet
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 016&nbsp;&nbsp;&nbsp;&nbsp;received&nbsp;a&nbsp;fatal&nbsp;amount&nbsp;of&nbsp;hits."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 017&nbsp;&nbsp;&nbsp;&nbsp;[hull&nbsp;hits]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 018&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[indexes&nbsp;(my-range&nbsp;1&nbsp;(+&nbsp;2&nbsp;hull))]
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;+&nbsp;(my-map&nbsp;hits&nbsp;indexes))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 020&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 021&nbsp;&nbsp;(defn&nbsp;alive-odds
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 022&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;map&nbsp;presentation&nbsp;of&nbsp;a&nbsp;ship&nbsp;and&nbsp;returns&nbsp;the&nbsp;odds&nbsp;the&nbsp;ship&nbsp;is&nbsp;still
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 023&nbsp;&nbsp;&nbsp;&nbsp;alive&nbsp;as&nbsp;a&nbsp;ratio."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 024&nbsp;&nbsp;&nbsp;&nbsp;[ship]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 025&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[hits&nbsp;(:hits&nbsp;ship)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;all-combinations&nbsp;(hits&nbsp;0)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hull&nbsp;(component&nbsp;ship&nbsp;:hull)]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(has-no-hits?&nbsp;ship)&nbsp;1
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(/&nbsp;(hull-hit-combinations&nbsp;hull&nbsp;hits)&nbsp;all-combinations))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 030&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 031&nbsp;&nbsp;(defn&nbsp;hit-once-odds
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 032&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;two&nbsp;map&nbsp;presentations&nbsp;of&nbsp;ships&nbsp;and&nbsp;returns&nbsp;the&nbsp;odds&nbsp;for&nbsp;the&nbsp;first&nbsp;one
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 033&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;them&nbsp;to&nbsp;hit&nbsp;the&nbsp;second&nbsp;with&nbsp;one&nbsp;dice.&nbsp;Includes&nbsp;shield&nbsp;and&nbsp;computer&nbsp;improve-
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 034&nbsp;&nbsp;&nbsp;&nbsp;ments.&nbsp;Considers&nbsp;6&nbsp;always&nbsp;a&nbsp;hit&nbsp;and&nbsp;1&nbsp;always&nbsp;a&nbsp;miss&nbsp;as&nbsp;set&nbsp;by&nbsp;game&nbsp;rules.&nbsp;Takes
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 035&nbsp;&nbsp;&nbsp;&nbsp;previous&nbsp;hits&nbsp;into&nbsp;consideration&nbsp;by&nbsp;multiplying&nbsp;the&nbsp;oss&nbsp;with&nbsp;odds&nbsp;to&nbsp;be&nbsp;alive."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 036&nbsp;&nbsp;&nbsp;&nbsp;[ship-a&nbsp;ship-d]
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                 037&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[prev-odds&nbsp;(*&nbsp;(alive-odds&nbsp;ship-d)&nbsp;(alive-odds&nbsp;ship-a))]
+                </span><br/>
+<span class="covered" title="12 out of 12 forms covered">
+                 038&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[numerator&nbsp;(+&nbsp;1&nbsp;(component&nbsp;ship-a&nbsp;:computer)&nbsp;(component&nbsp;ship-d&nbsp;:shield))]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 039&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(>&nbsp;numerator&nbsp;1)
+                </span><br/>
+<span class="covered" title="19 out of 19 forms covered">
+                 040&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(<&nbsp;numerator&nbsp;6)&nbsp;(*&nbsp;prev-odds&nbsp;(/&nbsp;numerator&nbsp;6))&nbsp;(*&nbsp;prev-odds(/&nbsp;5&nbsp;6)))
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 041&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;prev-odds&nbsp;(/&nbsp;1&nbsp;6))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 042&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 043&nbsp;&nbsp;(defn&nbsp;bin-coef&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 044&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;two&nbsp;nonnegative&nbsp;integers&nbsp;n&nbsp;and&nbsp;k,&nbsp;where&nbsp;k&nbsp;is&nbsp;greater&nbsp;than&nbsp;or&nbsp;equal&nbsp;to&nbsp;n
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 045&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;returns&nbsp;the&nbsp;number&nbsp;of&nbsp;k-elements&nbsp;subsets&nbsp;of&nbsp;n-elements&nbsp;set,&nbsp;in&nbsp;other&nbsp;words
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 046&nbsp;&nbsp;&nbsp;&nbsp;their&nbsp;binomial&nbsp;coefficient."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 047&nbsp;&nbsp;&nbsp;&nbsp;[n&nbsp;k]
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                 048&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[factorial&nbsp;(fn&nbsp;[x]&nbsp;(apply&nbsp;*&nbsp;(my-range&nbsp;1&nbsp;(inc&nbsp;x))))]
+                </span><br/>
+<span class="covered" title="16 out of 16 forms covered">
+                 049&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(/&nbsp;(factorial&nbsp;n)&nbsp;(*&nbsp;(factorial&nbsp;k)&nbsp;(factorial&nbsp;(-&nbsp;n&nbsp;k))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 050&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 051&nbsp;&nbsp;(defn&nbsp;bin-dist
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 052&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;three&nbsp;nonnegative&nbsp;integers&nbsp;n,&nbsp;k&nbsp;and&nbsp;p,&nbsp;where&nbsp;k&nbsp;is&nbsp;greater&nbsp;than&nbsp;or&nbsp;equal
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 053&nbsp;&nbsp;&nbsp;&nbsp;to&nbsp;n&nbsp;and&nbsp;p&nbsp;is&nbsp;a&nbsp;fraction.&nbsp;Returns&nbsp;binomial&nbsp;distribution&nbsp;where&nbsp;n&nbsp;is&nbsp;the&nbsp;number
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 054&nbsp;&nbsp;&nbsp;&nbsp;or&nbsp;repetitions,&nbsp;k&nbsp;is&nbsp;the&nbsp;number&nbsp;of&nbsp;desired&nbsp;cases&nbsp;and&nbsp;p&nbsp;is&nbsp;the&nbsp;probability&nbsp;of
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 055&nbsp;&nbsp;&nbsp;&nbsp;the&nbsp;desired&nbsp;case."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 056&nbsp;&nbsp;&nbsp;&nbsp;[n&nbsp;k&nbsp;p]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 057&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[q&nbsp;(-&nbsp;1&nbsp;p)]
+                </span><br/>
+<span class="covered" title="17 out of 17 forms covered">
+                 058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(bin-coef&nbsp;n&nbsp;k)&nbsp;(math/expt&nbsp;p&nbsp;k)&nbsp;(math/expt&nbsp;q&nbsp;(-&nbsp;n&nbsp;k)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 059&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 060&nbsp;&nbsp;(defn&nbsp;dice-hit-freq
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 061&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;dice&nbsp;damage&nbsp;as&nbsp;an&nbsp;integer&nbsp;and&nbsp;hit&nbsp;odds&nbsp;as&nbsp;a&nbsp;ratio&nbsp;and&nbsp;returns&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 062&nbsp;&nbsp;&nbsp;&nbsp;frequency&nbsp;of&nbsp;each&nbsp;damage&nbsp;as&nbsp;a&nbsp;map."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 063&nbsp;&nbsp;&nbsp;&nbsp;[damage&nbsp;odds]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 064&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[damage-n&nbsp;(numerator&nbsp;odds)]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 065&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{damage&nbsp;damage-n,&nbsp;0&nbsp;(-&nbsp;(denominator&nbsp;odds)&nbsp;damage-n)}))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 066&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 067&nbsp;&nbsp;(defn&nbsp;combination&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 068&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;an&nbsp;array&nbsp;of&nbsp;previous&nbsp;hits,&nbsp;the&nbsp;index&nbsp;of&nbsp;the&nbsp;array&nbsp;to&nbsp;update,&nbsp;a&nbsp;map
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 069&nbsp;&nbsp;&nbsp;&nbsp;containing&nbsp;frequencies&nbsp;for&nbsp;hit&nbsp;and&nbsp;miss&nbsp;and&nbsp;returns&nbsp;the&nbsp;updated&nbsp;combination
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 070&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;for&nbsp;the&nbsp;received&nbsp;index."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 071&nbsp;&nbsp;&nbsp;&nbsp;[hits&nbsp;i&nbsp;freq]
+                </span><br/>
+<span class="covered" title="12 out of 12 forms covered">
+                 072&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[damage&nbsp;(my-some&nbsp;#(if&nbsp;(pos?&nbsp;%)&nbsp;%)&nbsp;(keys&nbsp;freq))]
+                </span><br/>
+<span class="covered" title="21 out of 21 forms covered">
+                 073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(<=&nbsp;i&nbsp;damage)&nbsp;(if&nbsp;(zero?&nbsp;(get&nbsp;hits&nbsp;i))&nbsp;(if&nbsp;(=&nbsp;1&nbsp;i)&nbsp;(freq&nbsp;0)&nbsp;0)
+                </span><br/>
+<span class="covered" title="9 out of 9 forms covered">
+                 074&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(get&nbsp;hits&nbsp;i)&nbsp;(freq&nbsp;0)))
+                </span><br/>
+<span class="covered" title="17 out of 17 forms covered">
+                 075&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(zero?&nbsp;(hits&nbsp;1))&nbsp;(if&nbsp;(=&nbsp;(inc&nbsp;damage)&nbsp;i)&nbsp;(freq&nbsp;damage)&nbsp;0)
+                </span><br/>
+<span class="covered" title="22 out of 22 forms covered">
+                 076&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(+&nbsp;(*&nbsp;(freq&nbsp;damage)&nbsp;(get&nbsp;hits&nbsp;(-&nbsp;i&nbsp;damage)))&nbsp;(*&nbsp;(hits&nbsp;i)&nbsp;(freq&nbsp;0)))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 077&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 078&nbsp;&nbsp;(defn&nbsp;add-combinations
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 079&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;previous&nbsp;hits&nbsp;as&nbsp;a&nbsp;vector&nbsp;and&nbsp;a&nbsp;map&nbsp;containing&nbsp;hit&nbsp;frequencies&nbsp;for&nbsp;a&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 080&nbsp;&nbsp;&nbsp;&nbsp;single&nbsp;weapon&nbsp;hit.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;hits&nbsp;vector&nbsp;containing&nbsp;updated&nbsp;hit&nbsp;combinations."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 081&nbsp;&nbsp;&nbsp;&nbsp;[hits&nbsp;freq]
+                </span><br/>
+<span class="covered" title="12 out of 12 forms covered">
+                 082&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[damage&nbsp;(my-some&nbsp;#(if&nbsp;(pos?&nbsp;%)&nbsp;%)&nbsp;(keys&nbsp;freq))
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hull&nbsp;(count&nbsp;hits)]
+                </span><br/>
+<span class="covered" title="14 out of 14 forms covered">
+                 084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[acc&nbsp;[(*&nbsp;(apply&nbsp;+&nbsp;(vals&nbsp;freq))&nbsp;(hits&nbsp;0))]&nbsp;i&nbsp;1]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(>=&nbsp;i&nbsp;hull)&nbsp;acc
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(conj&nbsp;acc&nbsp;(combination&nbsp;hits&nbsp;i&nbsp;freq))&nbsp;(inc&nbsp;i))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 087&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 088&nbsp;&nbsp;(defn&nbsp;clipped
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 089&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;an&nbsp;integer&nbsp;and&nbsp;returns&nbsp;a&nbsp;smaller&nbsp;integer&nbsp;with&nbsp;last&nbsp;n&nbsp;digits&nbsp;clipped&nbsp;off."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 090&nbsp;&nbsp;&nbsp;&nbsp;[value&nbsp;n]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 091&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[multiplier&nbsp;(/&nbsp;1&nbsp;(math/expt&nbsp;10&nbsp;n))]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 092&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(math/round&nbsp;(*&nbsp;value&nbsp;multiplier))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 093&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 094&nbsp;&nbsp;(defn&nbsp;clip-value
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 095&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;an&nbsp;integer&nbsp;and&nbsp;checks&nbsp;how&nbsp;much&nbsp;it&nbsp;needs&nbsp;to&nbsp;be&nbsp;rounded&nbsp;down&nbsp;to&nbsp;keep&nbsp;the
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 096&nbsp;&nbsp;&nbsp;&nbsp;value&nbsp;in&nbsp;reasonable&nbsp;size.&nbsp;Returns&nbsp;the&nbsp;number&nbsp;of&nbsp;digits&nbsp;that&nbsp;need&nbsp;to&nbsp;be&nbsp;clipped
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 097&nbsp;&nbsp;&nbsp;&nbsp;from&nbsp;the&nbsp;end&nbsp;of&nbsp;the&nbsp;number."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 098&nbsp;&nbsp;&nbsp;&nbsp;[value]
+                </span><br/>
+<span class="covered" title="10 out of 10 forms covered">
+                 099&nbsp;&nbsp;&nbsp;&nbsp;(count&nbsp;(str&nbsp;(math/round&nbsp;(/&nbsp;value&nbsp;1E10)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 100&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 101&nbsp;&nbsp;(defn&nbsp;clipped-vec
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 102&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;vector&nbsp;containing&nbsp;integers&nbsp;and&nbsp;clips&nbsp;each&nbsp;value&nbsp;from&nbsp;the&nbsp;end&nbsp;enough
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 103&nbsp;&nbsp;&nbsp;&nbsp;digits&nbsp;for&nbsp;the&nbsp;first&nbsp;value&nbsp;to&nbsp;be&nbsp;less&nbsp;than&nbsp;1E11.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;vector&nbsp;with&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 104&nbsp;&nbsp;&nbsp;&nbsp;updated&nbsp;values."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 105&nbsp;&nbsp;&nbsp;&nbsp;[a-vec]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 106&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[n&nbsp;(clip-value&nbsp;(my-first&nbsp;a-vec))]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 107&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(mapv&nbsp;(fn&nbsp;[value]&nbsp;(clipped&nbsp;value&nbsp;n))&nbsp;a-vec)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 108&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 109&nbsp;&nbsp;(defn&nbsp;all-weapon-combinations
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 110&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;previous&nbsp;hits&nbsp;as&nbsp;vector,&nbsp;the&nbsp;number&nbsp;of&nbsp;weapons&nbsp;and&nbsp;damage&nbsp;value&nbsp;for&nbsp;those
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 111&nbsp;&nbsp;&nbsp;&nbsp;weapons,&nbsp;as&nbsp;well&nbsp;as&nbsp;odds&nbsp;for&nbsp;hitting&nbsp;the&nbsp;target&nbsp;and&nbsp;returns&nbsp;a&nbsp;vector&nbsp;containing
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 112&nbsp;&nbsp;&nbsp;&nbsp;combinations&nbsp;of&nbsp;all&nbsp;hits&nbsp;produced&nbsp;by&nbsp;those&nbsp;weapons,&nbsp;added&nbsp;on&nbsp;top&nbsp;of&nbsp;the&nbsp;combi-
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 113&nbsp;&nbsp;&nbsp;&nbsp;nations&nbsp;of&nbsp;any&nbsp;previous&nbsp;hits."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 114&nbsp;&nbsp;&nbsp;&nbsp;[hits&nbsp;weapons&nbsp;damage&nbsp;odds]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 115&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[acc&nbsp;hits&nbsp;i&nbsp;weapons]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 116&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(zero?&nbsp;i)
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                 117&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(<&nbsp;1E10&nbsp;(my-first&nbsp;acc))&nbsp;(clipped-vec&nbsp;acc)&nbsp;acc)
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 118&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(add-combinations&nbsp;acc&nbsp;(dice-hit-freq&nbsp;damage&nbsp;odds))&nbsp;(dec&nbsp;i)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 119&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 120&nbsp;&nbsp;(defn&nbsp;alive-odds-formatted
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 121&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;vector&nbsp;containing&nbsp;map&nbsp;presentations&nbsp;of&nbsp;ships&nbsp;and&nbsp;returns&nbsp;another&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 122&nbsp;&nbsp;&nbsp;&nbsp;vector&nbsp;containing&nbsp;formatted&nbsp;alive&nbsp;odds&nbsp;for&nbsp;each&nbsp;ship."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 123&nbsp;&nbsp;&nbsp;&nbsp;[ships]
+                </span><br/>
+<span class="covered" title="15 out of 15 forms covered">
+                 124&nbsp;&nbsp;&nbsp;&nbsp;(my-map&nbsp;(fn&nbsp;[ship]&nbsp;(format&nbsp;"%.1f"&nbsp;(*&nbsp;100&nbsp;(double&nbsp;(:alive&nbsp;ship)))))&nbsp;ships))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 125&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 126&nbsp;&nbsp;(defn&nbsp;none-alive-odds
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 127&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;vector&nbsp;containing&nbsp;map&nbsp;presentations&nbsp;of&nbsp;ships&nbsp;and&nbsp;returns&nbsp;the&nbsp;odds&nbsp;for&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 128&nbsp;&nbsp;&nbsp;&nbsp;none&nbsp;of&nbsp;the&nbsp;ships&nbsp;to&nbsp;be&nbsp;alive&nbsp;as&nbsp;a&nbsp;double"
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 129&nbsp;&nbsp;&nbsp;&nbsp;[ships]
+                </span><br/>
+<span class="covered" title="16 out of 16 forms covered">
+                 130&nbsp;&nbsp;&nbsp;&nbsp;(reduce&nbsp;(fn&nbsp;[acc&nbsp;ship]&nbsp;(*&nbsp;acc&nbsp;(-&nbsp;1&nbsp;(double&nbsp;(:alive&nbsp;ship)))))&nbsp;1&nbsp;ships))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 131&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 132&nbsp;&nbsp;(defn&nbsp;opponent-destroyed
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 133&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;the&nbsp;odds&nbsp;that&nbsp;none&nbsp;of&nbsp;the&nbsp;players&nbsp;ships&nbsp;are&nbsp;alive&nbsp;and&nbsp;the&nbsp;odds&nbsp;for&nbsp;none&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 134&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;the&nbsp;opponent&nbsp;ships&nbsp;to&nbsp;be&nbsp;alive&nbsp;as&nbsp;doubles&nbsp;and&nbsp;returns&nbsp;the&nbsp;odds&nbsp;at&nbsp;least&nbsp;one
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 135&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;the&nbsp;player&nbsp;ships&nbsp;survived&nbsp;and&nbsp;none&nbsp;of&nbsp;the&nbsp;opponent&nbsp;ships&nbsp;did."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 136&nbsp;&nbsp;&nbsp;&nbsp;[n-a-odds-a&nbsp;n-a-odds-b]
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 137&nbsp;&nbsp;&nbsp;&nbsp;(*&nbsp;(-&nbsp;1&nbsp;n-a-odds-a)&nbsp;n-a-odds-b))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 138&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 139&nbsp;&nbsp;(defn&nbsp;win-odds-defender
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 140&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;vector&nbsp;containing&nbsp;map&nbsp;presentations&nbsp;for&nbsp;both&nbsp;the&nbsp;defender&nbsp;and&nbsp;attacker
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 141&nbsp;&nbsp;&nbsp;&nbsp;and&nbsp;checks&nbsp;all&nbsp;ship&nbsp;alive&nbsp;odds&nbsp;and&nbsp;based&nbsp;on&nbsp;them&nbsp;returns&nbsp;the&nbsp;odds&nbsp;for&nbsp;the&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 142&nbsp;&nbsp;&nbsp;&nbsp;defenders&nbsp;side&nbsp;to&nbsp;win&nbsp;as&nbsp;a&nbsp;double"
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 143&nbsp;&nbsp;&nbsp;&nbsp;[d-ships&nbsp;a-ships]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 144&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[d-none-alive&nbsp;(none-alive-odds&nbsp;d-ships)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 145&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a-none-alive&nbsp;(none-alive-odds&nbsp;a-ships)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 146&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;a-destroyed&nbsp;(opponent-destroyed&nbsp;d-none-alive&nbsp;a-none-alive)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 147&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;d-destroyed&nbsp;(opponent-destroyed&nbsp;a-none-alive&nbsp;d-none-alive)]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 148&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(zero?&nbsp;a-none-alive)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 149&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.0&nbsp;
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 150&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(/&nbsp;a-destroyed&nbsp;(+&nbsp;a-destroyed&nbsp;d-destroyed)))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 151&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 152&nbsp;&nbsp;(defn&nbsp;win-odds-attacker
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 153&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;the&nbsp;odds&nbsp;for&nbsp;the&nbsp;defender&nbsp;to&nbsp;win&nbsp;and&nbsp;a&nbsp;vector&nbsp;containing&nbsp;defender&nbsp;ships
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 154&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;a&nbsp;parameter&nbsp;and&nbsp;returns&nbsp;the&nbsp;odds&nbsp;the&nbsp;attacker&nbsp;will&nbsp;win&nbsp;ass&nbsp;a&nbsp;double."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 155&nbsp;&nbsp;&nbsp;&nbsp;[d-win-odds&nbsp;d-ships]
+                </span><br/>
+<span class="covered" title="14 out of 14 forms covered">
+                 156&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(and&nbsp;(zero?&nbsp;d-win-odds)&nbsp;(zero?&nbsp;(none-alive-odds&nbsp;d-ships)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 157&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;0.0
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 158&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(-&nbsp;1&nbsp;d-win-odds)))
+                </span><br/>
+ </body>
+</html>

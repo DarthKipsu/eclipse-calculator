@@ -1,0 +1,322 @@
+<html>
+ <head>
+  <link rel="stylesheet" href="../../../coverage.css"/>  <title> eclipse/core/internal/attacks.clj </title>
+ </head>
+ <body>
+<span class="partial" title="36 out of 37 forms covered">
+                 001&nbsp;&nbsp;(ns&nbsp;eclipse.core.internal.attacks
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 002&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[clojure.math.numeric-tower&nbsp;:as&nbsp;math]
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 003&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;[eclipse.core.internal.my-clj-function-implementations&nbsp;:refer&nbsp;:all])
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 004&nbsp;&nbsp;&nbsp;&nbsp;(:use&nbsp;[eclipse.core.internal.odds]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 005&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="2 out of 2 forms covered">
+                 006&nbsp;&nbsp;(defn-&nbsp;is-opponent-for?&nbsp;[state,&nbsp;target]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 007&nbsp;&nbsp;&nbsp;&nbsp;(not=&nbsp;state&nbsp;(:state&nbsp;target)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 008&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 009&nbsp;&nbsp;(defn&nbsp;targets-for
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 010&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;string&nbsp;presentation&nbsp;of&nbsp;status&nbsp;and&nbsp;a&nbsp;list&nbsp;containing&nbsp;map&nbsp;presentations&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 011&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;ships,&nbsp;loops&nbsp;through&nbsp;the&nbsp;list&nbsp;and&nbsp;returns&nbsp;those&nbsp;with&nbsp;unmatching&nbsp;states,&nbsp;until
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 012&nbsp;&nbsp;&nbsp;&nbsp;one&nbsp;opponent&nbsp;with&nbsp;100%&nbsp;odds&nbsp;for&nbsp;being&nbsp;alive&nbsp;is&nbsp;found."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 013&nbsp;&nbsp;&nbsp;&nbsp;[state&nbsp;all-ships]
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 014&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[targets&nbsp;[]&nbsp;i&nbsp;0&nbsp;has-enough&nbsp;false]
+                </span><br/>
+<span class="covered" title="13 out of 13 forms covered">
+                 015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(or&nbsp;has-enough&nbsp;(=&nbsp;i&nbsp;(count&nbsp;all-ships)))&nbsp;targets
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[ship&nbsp;(all-ships&nbsp;i)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;opponent&nbsp;(is-opponent-for?&nbsp;state&nbsp;ship)]
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(if&nbsp;opponent&nbsp;(conj&nbsp;targets&nbsp;ship)&nbsp;targets)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(inc&nbsp;i)&nbsp;(if&nbsp;(and&nbsp;opponent&nbsp;(=&nbsp;1&nbsp;(alive-odds&nbsp;ship)))&nbsp;true&nbsp;false))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 020&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 021&nbsp;&nbsp;(defn&nbsp;attack-with-cannons
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 022&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;two&nbsp;map&nbsp;presentations&nbsp;of&nbsp;ships,&nbsp;the&nbsp;attacking&nbsp;ship&nbsp;and&nbsp;it's&nbsp;target.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 023&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;target&nbsp;with&nbsp;updated&nbsp;hit&nbsp;counter&nbsp;according&nbsp;to&nbsp;attacker&nbsp;cannons"
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 024&nbsp;&nbsp;&nbsp;&nbsp;[ship-a&nbsp;ship-d]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 025&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[hp1&nbsp;(component&nbsp;ship-a&nbsp;:dice1HP)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 026&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp2&nbsp;(component&nbsp;ship-a&nbsp;:dice2HP)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 027&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp4&nbsp;(component&nbsp;ship-a&nbsp;:dice4HP)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 028&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odds&nbsp;(hit-once-odds&nbsp;ship-a&nbsp;ship-d)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 029&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hits&nbsp;(:hits&nbsp;ship-d)
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 030&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp1-hits&nbsp;(all-weapon-combinations&nbsp;hits&nbsp;hp1&nbsp;1&nbsp;odds)
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 031&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp2-hits&nbsp;(all-weapon-combinations&nbsp;hp1-hits&nbsp;hp2&nbsp;2&nbsp;odds)
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 032&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp4-hits&nbsp;(all-weapon-combinations&nbsp;hp2-hits&nbsp;hp4&nbsp;4&nbsp;odds)
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 033&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ship-d-with-hits&nbsp;(assoc&nbsp;ship-d&nbsp;:hits&nbsp;hp4-hits)]
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 034&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;ship-d-with-hits&nbsp;:alive&nbsp;(alive-odds&nbsp;ship-d-with-hits))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 035&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 036&nbsp;&nbsp;(defn&nbsp;target-and-attack-cannons
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 037&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;map&nbsp;presentation&nbsp;of&nbsp;attacking&nbsp;ship&nbsp;and&nbsp;a&nbsp;vector&nbsp;containing&nbsp;all&nbsp;ships,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 038&nbsp;&nbsp;&nbsp;&nbsp;chooses&nbsp;targets&nbsp;to&nbsp;the&nbsp;attacker,&nbsp;attacks&nbsp;them&nbsp;and&nbsp;returns&nbsp;a&nbsp;new&nbsp;vector&nbsp;containing
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 039&nbsp;&nbsp;&nbsp;&nbsp;updated&nbsp;hit&nbsp;vectors&nbsp;for&nbsp;affected&nbsp;ships."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 040&nbsp;&nbsp;&nbsp;&nbsp;[ship-a&nbsp;ships]
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 041&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[targets&nbsp;(targets-for&nbsp;(:state&nbsp;ship-a)&nbsp;ships)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 042&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end-i&nbsp;(count&nbsp;targets)]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 043&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[new-ships&nbsp;ships&nbsp;i&nbsp;0]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 044&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(=&nbsp;i&nbsp;end-i)&nbsp;new-ships
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 045&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(assoc&nbsp;new-ships&nbsp;(:init&nbsp;(targets&nbsp;i))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 046&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(attack-with-cannons&nbsp;ship-a&nbsp;(targets&nbsp;i)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 047&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(inc&nbsp;i))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 048&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 049&nbsp;&nbsp;(defn&nbsp;cannons-round
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 050&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;map&nbsp;presentation&nbsp;of&nbsp;ships&nbsp;and&nbsp;adds&nbsp;attacks&nbsp;from&nbsp;cannons&nbsp;to&nbsp;to&nbsp;enemy
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 051&nbsp;&nbsp;&nbsp;&nbsp;hit&nbsp;vectors.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;map&nbsp;presentation&nbsp;of&nbsp;ships&nbsp;with&nbsp;updated&nbsp;hit&nbsp;vectors."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 052&nbsp;&nbsp;&nbsp;&nbsp;([ships]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 053&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[new-ships&nbsp;ships&nbsp;i&nbsp;0]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 054&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(=&nbsp;i&nbsp;(count&nbsp;ships))&nbsp;new-ships&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 055&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(target-and-attack-cannons&nbsp;(ships&nbsp;i)&nbsp;new-ships)&nbsp;(inc&nbsp;i)))))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 056&nbsp;&nbsp;&nbsp;&nbsp;([ships&nbsp;rounds]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 057&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[new-ships&nbsp;ships&nbsp;i&nbsp;rounds]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 058&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(zero?&nbsp;i)&nbsp;new-ships
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 059&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(cannons-round&nbsp;new-ships)&nbsp;(dec&nbsp;i))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 060&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 061&nbsp;&nbsp;(defn&nbsp;attack-with-missiles
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 062&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;two&nbsp;map&nbsp;presentations&nbsp;of&nbsp;ships,&nbsp;the&nbsp;attacking&nbsp;ship&nbsp;and&nbsp;it's&nbsp;target.
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 063&nbsp;&nbsp;&nbsp;&nbsp;Returns&nbsp;the&nbsp;target&nbsp;with&nbsp;updated&nbsp;hit&nbsp;counter&nbsp;according&nbsp;to&nbsp;attacker&nbsp;missiles,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 064&nbsp;&nbsp;&nbsp;&nbsp;as&nbsp;well&nbsp;as&nbsp;new&nbsp;alive&nbsp;odds&nbsp;for&nbsp;calculating&nbsp;future&nbsp;hit&nbsp;odds."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 065&nbsp;&nbsp;&nbsp;&nbsp;[ship-a&nbsp;ship-d]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 066&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[hp1&nbsp;(component&nbsp;ship-a&nbsp;:dice1HPmissile)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 067&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp2&nbsp;(component&nbsp;ship-a&nbsp;:dice2HPmissile)
+                </span><br/>
+<span class="covered" title="4 out of 4 forms covered">
+                 068&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;odds&nbsp;(hit-once-odds&nbsp;ship-a&nbsp;ship-d)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 069&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hits&nbsp;(:hits&nbsp;ship-d)
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 070&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp1-hits&nbsp;(all-weapon-combinations&nbsp;hits&nbsp;hp1&nbsp;1&nbsp;odds)
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 071&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;hp2-hits&nbsp;(all-weapon-combinations&nbsp;hp1-hits&nbsp;hp2&nbsp;2&nbsp;odds)
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 072&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ship-d-with-hits&nbsp;(assoc&nbsp;ship-d&nbsp;:hits&nbsp;hp2-hits)]
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 073&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(assoc&nbsp;ship-d-with-hits&nbsp;:alive&nbsp;(alive-odds&nbsp;ship-d-with-hits))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 074&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 075&nbsp;&nbsp;(defn&nbsp;target-and-attack-missiles
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 076&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;map&nbsp;presentation&nbsp;of&nbsp;attacking&nbsp;ship&nbsp;and&nbsp;a&nbsp;vector&nbsp;containing&nbsp;all&nbsp;ships,
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 077&nbsp;&nbsp;&nbsp;&nbsp;chooses&nbsp;targets&nbsp;to&nbsp;the&nbsp;attacker,&nbsp;attacks&nbsp;them&nbsp;and&nbsp;returns&nbsp;a&nbsp;new&nbsp;vector&nbsp;containing
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 078&nbsp;&nbsp;&nbsp;&nbsp;updated&nbsp;hit&nbsp;vectors&nbsp;for&nbsp;affected&nbsp;ships."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 079&nbsp;&nbsp;&nbsp;&nbsp;[ship-a&nbsp;ships]
+                </span><br/>
+<span class="covered" title="7 out of 7 forms covered">
+                 080&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[targets&nbsp;(targets-for&nbsp;(:state&nbsp;ship-a)&nbsp;ships)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 081&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;end-i&nbsp;(count&nbsp;targets)]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 082&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[new-ships&nbsp;ships&nbsp;i&nbsp;0]
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 083&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(=&nbsp;i&nbsp;end-i)&nbsp;new-ships
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 084&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(assoc&nbsp;new-ships&nbsp;(:init&nbsp;(targets&nbsp;i))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 085&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(attack-with-missiles&nbsp;ship-a&nbsp;(targets&nbsp;i)))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 086&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(inc&nbsp;i))))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 087&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 088&nbsp;&nbsp;(defn&nbsp;has-missiles?
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 089&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;map&nbsp;presentation&nbsp;of&nbsp;a&nbsp;ship&nbsp;and&nbsp;checks&nbsp;if&nbsp;the&nbsp;ship&nbsp;has&nbsp;any&nbsp;missile
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 090&nbsp;&nbsp;&nbsp;&nbsp;weaponry&nbsp;installed.&nbsp;Returns&nbsp;true&nbsp;if&nbsp;it&nbsp;has."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 091&nbsp;&nbsp;&nbsp;&nbsp;[ship]
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 092&nbsp;&nbsp;&nbsp;&nbsp;(or
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 093&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(pos?&nbsp;(component&nbsp;ship&nbsp;:dice1HPmissile))
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 094&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(pos?&nbsp;(component&nbsp;ship&nbsp;:dice2HPmissile))))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 095&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 096&nbsp;&nbsp;(defn&nbsp;missiles-round
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 097&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;map&nbsp;presentation&nbsp;of&nbsp;ships,&nbsp;checks&nbsp;each&nbsp;ship&nbsp;for&nbsp;missiles&nbsp;and&nbsp;if&nbsp;they
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 098&nbsp;&nbsp;&nbsp;&nbsp;have&nbsp;any,&nbsp;adds&nbsp;those&nbsp;attacks&nbsp;to&nbsp;enemy&nbsp;hit&nbsp;vectors.&nbsp;Returns&nbsp;a&nbsp;new&nbsp;map&nbsp;presentation
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 099&nbsp;&nbsp;&nbsp;&nbsp;of&nbsp;ships&nbsp;with&nbsp;updated&nbsp;hit&nbsp;vectors."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 100&nbsp;&nbsp;&nbsp;&nbsp;[ships]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 101&nbsp;&nbsp;&nbsp;&nbsp;(loop&nbsp;[new-ships&nbsp;ships&nbsp;i&nbsp;0]
+                </span><br/>
+<span class="covered" title="8 out of 8 forms covered">
+                 102&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(if&nbsp;(=&nbsp;i&nbsp;(count&nbsp;ships))&nbsp;new-ships&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 103&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(recur&nbsp;(if&nbsp;(has-missiles?&nbsp;(ships&nbsp;i))
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 104&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;(target-and-attack-missiles&nbsp;(ships&nbsp;i)&nbsp;new-ships)
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 105&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;new-ships)&nbsp;(inc&nbsp;i)))))
+                </span><br/>
+ </body>
+</html>

@@ -1,0 +1,70 @@
+<html>
+ <head>
+  <link rel="stylesheet" href="../../../coverage.css"/>  <title> eclipse/core/internal/reforms.clj </title>
+ </head>
+ <body>
+<span class="partial" title="32 out of 33 forms covered">
+                 001&nbsp;&nbsp;(ns&nbsp;eclipse.core.internal.reforms
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 002&nbsp;&nbsp;&nbsp;&nbsp;(:require&nbsp;[eclipse.core.internal.my-clj-function-implementations&nbsp;:refer&nbsp;:all]))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 003&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 004&nbsp;&nbsp;(defn&nbsp;empty-hits-vector&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 005&nbsp;&nbsp;&nbsp;&nbsp;"takes&nbsp;a&nbsp;hull&nbsp;count&nbsp;and&nbsp;returns&nbsp;an&nbsp;empty&nbsp;hits&nbsp;vector&nbsp;with&nbsp;enough&nbsp;slots&nbsp;for&nbsp;
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 006&nbsp;&nbsp;&nbsp;&nbsp;each&nbsp;hull"
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 007&nbsp;&nbsp;&nbsp;&nbsp;[hull]
+                </span><br/>
+<span class="covered" title="11 out of 11 forms covered">
+                 008&nbsp;&nbsp;&nbsp;&nbsp;(apply&nbsp;conj&nbsp;[1]&nbsp;(my-repeat&nbsp;(inc&nbsp;hull)&nbsp;0)))
+                </span><br/>
+<span class="blank" title="0 out of 0 forms covered">
+                 009&nbsp;&nbsp;
+                </span><br/>
+<span class="covered" title="1 out of 1 forms covered">
+                 010&nbsp;&nbsp;(defn&nbsp;reform-single-ship
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 011&nbsp;&nbsp;&nbsp;&nbsp;"Takes&nbsp;a&nbsp;vector&nbsp;containing&nbsp;a&nbsp;ship&nbsp;presentation&nbsp;returned&nbsp;by&nbsp;the&nbsp;ui&nbsp;and&nbsp;returns
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 012&nbsp;&nbsp;&nbsp;&nbsp;a&nbsp;new&nbsp;ship&nbsp;map&nbsp;structure&nbsp;created&nbsp;based&nbsp;on&nbsp;the&nbsp;input."
+                </span><br/>
+<span class="not-tracked" title="0 out of 0 forms covered">
+                 013&nbsp;&nbsp;&nbsp;&nbsp;[i&nbsp;ship-json]
+                </span><br/>
+<span class="covered" title="21 out of 21 forms covered">
+                 014&nbsp;&nbsp;&nbsp;&nbsp;(let&nbsp;[part&nbsp;(ship-json&nbsp;0)]
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 015&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{:state&nbsp;(ship-json&nbsp;1)
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 016&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:components&nbsp;{:dice1HPmissile&nbsp;(part&nbsp;"dice1HPmissile")
+                </span><br/>
+<span class="covered" title="3 out of 3 forms covered">
+                 017&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:dice2HPmissile&nbsp;(part&nbsp;"dice2HPmissile")
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 018&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:dice1HP&nbsp;(part&nbsp;"dice1HP")&nbsp;:dice2HP&nbsp;(part&nbsp;"dice2HP")
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 019&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:dice4HP&nbsp;(part&nbsp;"dice4HP")&nbsp;:computer&nbsp;(part&nbsp;"computer")
+                </span><br/>
+<span class="covered" title="6 out of 6 forms covered">
+                 020&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:hull&nbsp;(part&nbsp;"hull")&nbsp;:shield&nbsp;(part&nbsp;"shield")}
+                </span><br/>
+<span class="covered" title="5 out of 5 forms covered">
+                 021&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;:hits&nbsp;(empty-hits-vector&nbsp;(part&nbsp;"hull"))&nbsp;:alive&nbsp;1&nbsp;:init&nbsp;i}))
+                </span><br/>
+ </body>
+</html>
