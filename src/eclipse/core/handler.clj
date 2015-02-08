@@ -21,15 +21,17 @@
         :headers {"Location" "http://darth.kipsu.fi/EclipseCalculator"}
         :body ""})
   (GET "/odds" {params :params}
-       (cond
-         (empty? params) (error 400 "request cannot be empty")
-         :else
-           (try {:status 200
-                 :headers {"Content-Type" "application/json"
-                           "Access-Control-Allow-Origin" "*"}
-                 :body (win-probabilities (reform-ships params))}
-             (catch Exception e
-               (error 500 (str "caught exception: " (.getMessage e)))))))
+       (try
+         (let [data (json/read-str (params :data))]
+           (cond
+             (empty? data) (error 400 "request cannot be empty")
+             :else
+             {:status 200
+              :headers {"Content-Type" "application/json"
+                        "Access-Control-Allow-Origin" "*"}
+              :body (win-probabilities (reform-ships data))}))
+         (catch Exception e
+           (error 500 (str "caught exception: " (.getMessage e))))))
   (route/not-found "Not Found"))
 
 (def app
