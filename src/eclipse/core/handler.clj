@@ -24,7 +24,8 @@
          (empty? params) (error "request cannot be empty")
          :else
            {:status 200
-            :headers {"Content-Type" "application/json"}
+            :headers {"Content-Type" "application/json"
+                      "Access-Control-Allow-Origin" "*"}
             :body (win-probabilities (reform-ships params))}))
   (route/not-found "Not Found"))
 
