@@ -9,9 +9,10 @@
         [ring.middleware.keyword-params :only [wrap-keyword-params]])
   (:gen-class))
 
-(defn- error [message]
-  {:status 400
-   :headers {"Content-Type" "application/json"}
+(defn- error [code message]
+  {:status code
+   :headers {"Content-Type" "application/json"
+             "Access-Control-Allow-Origin" "*"}
    :body {:error message}})
 
 (defroutes app-routes
@@ -21,12 +22,14 @@
         :body ""})
   (GET "/odds" {params :params}
        (cond
-         (empty? params) (error "request cannot be empty")
+         (empty? params) (error 400 "request cannot be empty")
          :else
-           {:status 200
-            :headers {"Content-Type" "application/json"
-                      "Access-Control-Allow-Origin" "*"}
-            :body (win-probabilities (reform-ships params))}))
+           (try {:status 200
+                 :headers {"Content-Type" "application/json"
+                           "Access-Control-Allow-Origin" "*"}
+                 :body (win-probabilities (reform-ships params))}
+             (catch Exception e
+               (error 500 (str "caught exception: " (.getMessage e)))))))
   (route/not-found "Not Found"))
 
 (def app
