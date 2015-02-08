@@ -1,11 +1,13 @@
 (ns eclipse.core.handler
   (:require [compojure.core :refer :all]
             [compojure.route :as route]
+            [ring.adapter.jetty :as ring]
             [eclipse.core.core :refer :all]
             [clojure.data.json :as json])
-(:use [ring.middleware.params :only [wrap-params]]
-      [ring.middleware.json :refer :all]
-      [ring.middleware.keyword-params :only [wrap-keyword-params]]))
+  (:use [ring.middleware.params :only [wrap-params]]
+        [ring.middleware.json :refer :all]
+        [ring.middleware.keyword-params :only [wrap-keyword-params]])
+  (:gen-class))
 
 (defn- error [message]
   {:status 400
@@ -13,7 +15,10 @@
    :body {:error message}})
 
 (defroutes app-routes
-  (GET "/" [] "Hello World")
+  (GET "/" []
+       {:status 302
+        :headers {"Location" "http://darth.kipsu.fi/EclipseCalculator"}
+        :body ""})
   (GET "/odds" {params :params}
        (cond
          (empty? params) (error "request cannot be empty")
@@ -29,3 +34,10 @@
             wrap-json-params
             wrap-keyword-params
             wrap-params)))
+
+(defn start [port]
+  (ring/run-jetty app {:port port :join? false}))
+
+(defn -main []
+  (let [port (Integer. (or (System/getenv "PORT") "8080"))]
+    (start port)))
