@@ -11,6 +11,8 @@
         (hit-once-odds att-dre def-int) => 5/6)
   (fact "1/6 odds even against insane shield bonuses"
         (hit-once-odds def-int att-dre) => 1/6)
+  (fact "takes previous hits into consideration when only attacker has been hit"
+        (hit-once-odds ref-int2-h1 ref-int) => 5/36)
   (fact "multiplies the dice odds with alive odds to account for previous hits"
         (hit-once-odds att-dre def-cru) => 25/54))
 
@@ -44,6 +46,7 @@
   (fact "adds a single weapon odds to all hit combinations"
         (add-combinations [1 0] {1 1 0 5}) => [6 5]
         (add-combinations [1 0] {2 1 0 2}) => [3 2]
+        (add-combinations [1 0] {1 5 0 31}) => [36 31]
         (add-combinations [1 0 0] {2 1 0 1}) => [2 1 0]
         (add-combinations [1 0 0 0] {2 1 0 5}) => [6 5 0 1]
         (add-combinations [3 2 1 0] {1 1 0 2}) => [9 4 4 1]
@@ -55,6 +58,9 @@
   (fact "adds all hits for a type of weapon"
         (all-weapon-combinations [1 0] 1 1 1/6) => [6 5]
         (all-weapon-combinations [1 0] 2 1 1/6) => [36 25]
+        (all-weapon-combinations [1 0] 1 1 5/36) => [36 31]
+        (all-weapon-combinations [6 5] 1 1 155/1296) => [7776 5705]
+        (all-weapon-combinations [36 31] 1 1 176855/1679616) => [60466176 46585591]
         (all-weapon-combinations [1 0 0] 1 1 1/6) => [6 5 1]
         (all-weapon-combinations [1 0 0 0] 2 2 2/6) => [9 4 0 4]
         (all-weapon-combinations [6 5 1 0 0] 2 1 2/6) => [54 20 24 9 1])

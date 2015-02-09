@@ -52,7 +52,7 @@
   ([ships]
     (loop [new-ships ships i 0]
       (if (= i (count ships)) new-ships 
-        (recur (target-and-attack-cannons (ships i) new-ships) (inc i)))))
+        (recur (target-and-attack-cannons (new-ships i) new-ships) (inc i)))))
   ([ships rounds]
    (loop [new-ships ships i rounds]
      (if (zero? i) new-ships
@@ -100,6 +100,6 @@
   [ships]
   (loop [new-ships ships i 0]
     (if (= i (count ships)) new-ships 
-      (recur (if (has-missiles? (ships i))
-               (target-and-attack-missiles (ships i) new-ships)
+      (recur (if (has-missiles? (new-ships i))
+               (target-and-attack-missiles (new-ships i) new-ships)
               new-ships) (inc i)))))

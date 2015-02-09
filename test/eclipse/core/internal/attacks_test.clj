@@ -42,7 +42,7 @@
         (missiles-round [missile-01 missile-02 missile-03]) =>
           [missile-01-hit-2 missile-02-hit-2 missile-03]
         (missiles-round [missile-01 missile-02-hit-2 missile-03]) =>
-          [missile-01-hit-2 missile-02-hit-4 missile-03-hit-2]))
+          [missile-01-hit-3 missile-02-hit-4 missile-03-hit-2]))
 
 (facts "cannons"
   (fact "adds attacker cannons to defenders hits vector"
@@ -57,12 +57,16 @@
         (target-and-attack-cannons cannon-01 [cannon-01 cannon-03 cannon-02]) => 
           [cannon-01 cannon-03-hit cannon-02]
         (target-and-attack-cannons cannon-03 [cannon-01 cannon-03 cannon-02]) => 
-          [cannon-01-hit cannon-03 cannon-02])
+          [cannon-01-hit cannon-03 cannon-02]
+        (target-and-attack-cannons ref-int [ref-int ref-int2]) => 
+          [ref-int ref-int2-h1])
   (fact "plays a cannon round for all ships"
         (cannons-round [cannon-01 cannon-03]) =>
-          [cannon-01-hit cannon-03-hit]
+          [cannon-01-hit-2 cannon-03-hit]
         (cannons-round [cannon-01 cannon-03 cannon-02]) =>
-          [cannon-01-hit cannon-03-hit-2 cannon-02])
+          [cannon-01-hit-2 cannon-03-hit-2 cannon-02]
+        (cannons-round [ref-int ref-int2]) =>
+          [ref-int-h1 ref-int2-h1])
   (fact "plays three rounds of cannons for all ships"
         (cannons-round [cannon-04 cannon-05] 3) => 
           [cannon-04-hit-3 cannon-05-hit-3])

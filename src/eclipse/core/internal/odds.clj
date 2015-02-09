@@ -34,11 +34,11 @@
   ments. Considers 6 always a hit and 1 always a miss as set by game rules. Takes
   previous hits into consideration by multiplying the oss with odds to be alive."
   [ship-a ship-d]
-  (let [prev-odds (* (alive-odds ship-d) (alive-odds ship-a))]
-  (let [numerator (+ 1 (component ship-a :computer) (component ship-d :shield))]
+  (let [prev-odds (* (alive-odds ship-d) (alive-odds ship-a))
+        numerator (+ 1 (component ship-a :computer) (component ship-d :shield))]
     (if (> numerator 1)
       (if (< numerator 6) (* prev-odds (/ numerator 6)) (* prev-odds(/ 5 6)))
-      (* prev-odds (/ 1 6))))))
+      (* prev-odds (/ 1 6)))))
 
 (defn bin-coef 
   "Takes two nonnegative integers n and k, where k is greater than or equal to n
