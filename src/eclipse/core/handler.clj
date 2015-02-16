@@ -20,6 +20,11 @@
        {:status 302
         :headers {"Location" "http://darth.kipsu.fi/EclipseCalculator"}
         :body ""})
+  (GET "/initiate" []
+       {:status 200
+        :headers {"Content-Type" "application/json"
+                  "Access-Control-Allow-Origin" "*"}
+        :body ""})
   (GET "/odds" {params :params}
        (try
          (let [data (json/read-str (params :data))]
