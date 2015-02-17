@@ -1,6 +1,7 @@
 (ns eclipse.core.internal.performance-tests
   (:require [clojure.test :refer :all]
-            [eclipse.core.internal.my-clj-function-implementations :refer :all])
+            [eclipse.core.internal.my-clj-function-implementations :refer :all]
+            [eclipse.core.core :refer :all])
   (:use midje.sweet))
 
 (def some1E3 (assoc (into [] (repeat 1000 1)) 999 2))
@@ -36,3 +37,18 @@
         (println "  Some, 1 000 000 values")
         (time (some even? some1E6))
         (time (my-some even? some1E6))))
+
+(facts "performance of my reduce function"
+  (fact "comparison between my-reduce and reduce"
+        (println "\n  Reduce, 5 values")
+        (time (reduce + [1 3 5 7 8]))
+        (time (my-reduce + [1 3 5 7 8]))
+        (println "  Reduce, 1000 values")
+        (time (reduce + some1E3))
+        (time (my-reduce + some1E3))
+        (println "  Reduce, 10 000 values")
+        (time (reduce + some1E4))
+        (time (my-reduce + some1E4))
+        (println "  Reduce, 1 000 000 values")
+        (time (reduce + some1E6))
+        (time (my-reduce + some1E6))))

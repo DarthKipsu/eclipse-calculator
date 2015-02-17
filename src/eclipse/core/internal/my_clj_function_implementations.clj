@@ -44,7 +44,7 @@
   the sequence and applies the function to each value and then returns the results
   of the function in a sequence."
   [func a-seq]
-  (persistent! (reduce (fn [acc n] (conj! acc (func n))) (transient []) a-seq)))
+  (persistent! (my-reduce (fn [acc n] (conj! acc (func n))) (transient []) a-seq)))
   
 (defn my-some
   "takes a predicate function and a sequence and returns true when first of the
@@ -82,7 +82,6 @@
    (if (empty? seq-rest)
      (if seq-first seq-first 0)
      (my-reduce func seq-first seq-rest)))
-  ([func value [seq-first & seq-rest]]
-   (if (empty? seq-rest)
-     (if seq-first (func value seq-first) value)
-     (recur func (func value seq-first) seq-rest))))
+  ([func value a-seq]
+   (if (empty? a-seq) value
+     (recur func (func value (first a-seq)) (rest a-seq)))))
