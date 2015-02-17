@@ -127,7 +127,7 @@
   "Takes a vector containing map presentations of ships and returns the odds for 
   none of the ships to be alive as a double"
   [ships]
-  (reduce (fn [acc ship] (* acc (- 1 (double (:alive ship))))) 1 ships))
+  (my-reduce (fn [acc ship] (* acc (- 1 (double (:alive ship))))) 1 ships))
 
 (defn opponent-destroyed
   "Takes the odds that none of the players ships are alive and the odds for none 

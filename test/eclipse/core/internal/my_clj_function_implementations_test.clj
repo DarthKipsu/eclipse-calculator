@@ -66,3 +66,12 @@
         (my-some even? '(1 3 5)) => nil
         (my-some odd? [2 4 6]) => nil
         (my-some (fn [x] (== 7 x)) '(2 4 6 8)) => nil))
+
+(facts "my reduce implementation"
+  (fact "my-reduce returns a list of items reduced to one item"
+        (my-reduce + [1 2 3 4 5]) => 15
+        (my-reduce + 1 [2 3 4 5]) => 15
+        (my-reduce + []) => 0
+        (my-reduce + 1 []) => 1
+        (my-reduce conj #{} '(:a :b :c)) => #{:a :b :c}
+        (my-reduce conj [1 2 3] [4 5 6]) => [1 2 3 4 5 6]))
