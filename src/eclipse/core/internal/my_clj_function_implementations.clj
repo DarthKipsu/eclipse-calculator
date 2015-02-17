@@ -39,6 +39,19 @@
         acc
         (recur (conj acc (a-vec n)) (inc n))))))
 
+(defn my-reduce
+  "takes a function and a list as parameters and returns the list reduced to a
+  single value based on the given function. Optional second parameter (before
+  the list) is a beginning value for the operation. The function given must
+  take two parameters."
+  ([func [seq-first & seq-rest]]
+   (if (empty? seq-rest)
+     (if seq-first seq-first 0)
+     (my-reduce func seq-first seq-rest)))
+  ([func value a-seq]
+   (if (empty? a-seq) value
+     (recur func (func value (first a-seq)) (rest a-seq)))))
+
 (defn apply-all 
   "a helper function for my-map that takes a function and a sequence, goes through
   the sequence and applies the function to each value and then returns the results
@@ -49,8 +62,8 @@
 (defn my-some
   "takes a predicate function and a sequence and returns true when first of the
   sequences values meets the predicate and nil if none will."
-  [func [seq-first & seq-rest]]
-  (when seq-first (or (func seq-first) (recur func seq-rest))))
+  [func a-seq]
+  (reduce (fn [acc n] (or acc (func n))) false a-seq))
 
 (defn my-map
   "takes a function and one or more sequences and returns a vector containing
@@ -72,16 +85,3 @@
    (loop [acc '() n (dec end)]
      (if (== n (dec start)) acc
        (recur (conj acc n) (dec n))))))
-
-(defn my-reduce
-  "takes a function and a list as parameters and returns the list reduced to a
-  single value based on the given function. Optional second parameter (before
-  the list) is a beginning value for the operation. The function given must
-  take two parameters."
-  ([func [seq-first & seq-rest]]
-   (if (empty? seq-rest)
-     (if seq-first seq-first 0)
-     (my-reduce func seq-first seq-rest)))
-  ([func value a-seq]
-   (if (empty? a-seq) value
-     (recur func (func value (first a-seq)) (rest a-seq)))))

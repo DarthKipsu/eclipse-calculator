@@ -62,10 +62,10 @@
         (my-some odd? '(1 2 3))
         (my-some odd? [2 3 4])
         (my-some (fn [x] (< 5 x)) '(4 5 6)))
-  (fact "my-some returns nil when none of the values given evaluates to true"
-        (my-some even? '(1 3 5)) => nil
-        (my-some odd? [2 4 6]) => nil
-        (my-some (fn [x] (== 7 x)) '(2 4 6 8)) => nil))
+  (fact "my-some returns false when none of the values given evaluates to true"
+        (my-some even? '(1 3 5)) => false
+        (my-some odd? [2 4 6]) => false
+        (my-some (fn [x] (== 7 x)) '(2 4 6 8)) => false))
 
 (facts "my reduce implementation"
   (fact "my-reduce returns a list of items reduced to one item"
