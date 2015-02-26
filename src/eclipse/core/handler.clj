@@ -25,7 +25,7 @@
         :headers {"Content-Type" "application/json"
                   "Access-Control-Allow-Origin" "*"}
         :body ""})
-  (GET "/odds" {params :params}
+  (POST "/odds" {params :params}
        (try
          (let [data (json/read-str (params :data))]
            (cond
